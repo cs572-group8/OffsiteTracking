@@ -1,0 +1,5 @@
+# included configuration file
+/config
+
+# dependencies
+/node_modules
