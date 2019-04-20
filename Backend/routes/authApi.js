@@ -13,6 +13,7 @@ router.post('/login', (req, res) => {
         });
     });
 
+
     var token = jwt.sign("{User data String}", key, { expiresIn: 60 * 60 });
     res.status(200).json({ success: true, token: token })
     res.json({ response: "res" });
