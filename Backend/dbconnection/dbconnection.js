@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const cfg = require("../config/config").config
+const cfg = require("../config/config")
 
 
 const dbname = cfg.dbname;
