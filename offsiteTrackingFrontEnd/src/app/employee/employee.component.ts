@@ -65,14 +65,13 @@ export class EmployeeComponent implements OnInit {
   	}
   	else
   	{
-      // this.data=this.employeeForm.value;
-      // this.http.post('/api/v1/users/signup', this.data)
-      // .subscribe((data:any) => { 
-      //      console.log(data);
-      //  }, 
-      //           error =>   { 	this.serviceErrors = error.error.error;
-      //   });
-  	
+      this.data=this.employeeForm.value;
+      this.http.post('/api/employee/save', this.data)
+      .subscribe((data:any) => { 
+           console.log(data);
+       }, 
+                error =>   { 	this.serviceErrors = error.error.error;
+        });  	
   	}
   }
 
