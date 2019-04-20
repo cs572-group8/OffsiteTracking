@@ -15,7 +15,7 @@ app.use(db());
 
 app.use('*/api', auth);
 app.use("/auth", authApi);
-app.use("/api", userApi);
-app.use("/api", adminApi);
+app.use("/api/employee", userApi);
+app.use("/api/admin", adminApi);
 
 app.listen(port, () => console.log(`listening port ${port}`));

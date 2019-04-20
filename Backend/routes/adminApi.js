@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 
-router.post('/login', (req, res) => {
+router.post('/schedule', (req, res) => {
 });
 
 module.exports = router;

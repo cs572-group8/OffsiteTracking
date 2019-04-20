@@ -5,6 +5,7 @@ const User = require('../models/UserModel');
 
 router.post('/login', (req, res) => {
     let loginData = req.body;
+
     bcrypt.genSalt(saltRounds, function (err, salt) {
         bcrypt.hash(loginData.password, salt, function (err, hash) {
             if (err)

@@ -9,7 +9,7 @@ var placeSchema = new mongoose.Schema({
         state: { type: String, required: true },
         city: { type: String, required: true },
         street: { type: String, required: true },
-        state: { type: String, required: true },
+        postalCode: { type: Number, required: true },
         location: [Number, Number],
     },
     schedule: [

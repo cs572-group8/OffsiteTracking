@@ -10,61 +10,55 @@ import { HttpClient } from '@angular/common/http';
 export class EmployeeComponent implements OnInit {
   data;
   submitted = false;
-	employeeForm: FormGroup;
-  serviceErrors:any = {};
+  employeeForm: FormGroup;
+  serviceErrors: any = {};
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient)  {  }
-  invalidFirstName()
-  {
-  	return (this.submitted && this.employeeForm.controls.firstName.errors != null);
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
+  invalidFirstName() {
+    return (this.submitted && this.employeeForm.controls.firstName.errors != null);
   }
 
-  invalidLastName()
-  {
-  	return (this.submitted && this.employeeForm.controls.lastName.errors != null);
+  invalidLastName() {
+    return (this.submitted && this.employeeForm.controls.lastName.errors != null);
   }
 
-  invalidEmail()
-  {
-  	return (this.submitted && this.employeeForm.controls.email.errors != null);
+  invalidEmail() {
+    return (this.submitted && this.employeeForm.controls.email.errors != null);
   }
 
-  invalidPostalCode()
-  {
-  	return (this.submitted && this.employeeForm.controls.postalCode.errors != null);
+  invalidPostalCode() {
+    return (this.submitted && this.employeeForm.controls.postalCode.errors != null);
   }
-  invalidAddress(){
+  invalidAddress() {
     return (this.submitted && this.employeeForm.controls.address.errors != null);
   }
-  invalidCity(){
+  invalidCity() {
     return (this.submitted && this.employeeForm.controls.City.errors != null);
   }
-  invalidPhoneNumber(){
+  invalidPhoneNumber() {
     return (this.submitted && this.employeeForm.controls.phoneNumber.errors != null);
   }
 
 
   ngOnInit() {
     this.employeeForm = this.formBuilder.group({
-  		firstName: ['', Validators.required],
-  		lastName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required]],
       address: ['', [Validators.required]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
-    	postalCode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]] 	});
+      postalCode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]]
+    });
   }
-  onSubmit()
-  {
-    	this.submitted = true;
+  onSubmit() {
+    this.submitted = true;
 
-  	if(this.employeeForm.invalid == true)
-  	{
-  		return;
-  	}
-  	else
-  	{
+    if (this.employeeForm.invalid == true) {
+      return;
+    }
+    else {
       // this.data=this.employeeForm.value;
       // this.http.post('/api/v1/users/signup', this.data)
       // .subscribe((data:any) => { 
@@ -72,8 +66,8 @@ export class EmployeeComponent implements OnInit {
       //  }, 
       //           error =>   { 	this.serviceErrors = error.error.error;
       //   });
-  	
-  	}
+
+    }
   }
 
 }
