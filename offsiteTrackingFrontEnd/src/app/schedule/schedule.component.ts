@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClientService } from '../service/client-service.service';
 
 @Component({
   selector: 'app-schedule',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ScheduleComponent implements OnInit {
   scheduleForm: FormGroup;
   showFiller = false;
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private service: ClientService) {
     this.scheduleForm = this.formBuilder.group({
       placeName: ['', [Validators.required]],
       address: this.formBuilder.group({
@@ -17,7 +18,7 @@ export class ScheduleComponent implements OnInit {
         city: ['', [Validators.required]],
         street: ['', [Validators.required]],
         postalCode: ['', [Validators.required]],
-        location: [[], [Validators.required]]
+        location: ['', [Validators.required]]
       }),
       schedule: this.formBuilder.group(
         {
@@ -32,6 +33,13 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
   }
   save() {
-    console.log(this.scheduleForm.value);
+    this.service.saveSchedule(this.scheduleForm.value).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

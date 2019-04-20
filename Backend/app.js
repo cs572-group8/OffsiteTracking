@@ -17,5 +17,6 @@ app.use('*/api', auth);
 app.use("/auth", authApi);
 app.use("/api/employee", userApi);
 app.use("/api/admin", adminApi);
+app.all('/*', app.Router().end())
 
 app.listen(port, () => console.log(`listening port ${port}`));
