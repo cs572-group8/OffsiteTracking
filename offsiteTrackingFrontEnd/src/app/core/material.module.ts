@@ -1,13 +1,13 @@
 import {NgModule} from "@angular/core";
 import { CommonModule } from '@angular/common';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule,MatSelectModule,MatOptionModule
+  MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule,MatSelectModule,MatOptionModule, MatNativeDateModule
 } from '@angular/material';
 @NgModule({
   imports: [
-  CommonModule, 
+  CommonModule,
   MatToolbarModule,
   MatButtonModule, 
   MatCardModule,
@@ -17,7 +17,9 @@ import {
   MatMenuModule,
   MatIconModule,
   MatProgressSpinnerModule,
-  MatSelectModule,MatOptionModule
+  MatSelectModule,MatOptionModule,
+  MatDatepickerModule,
+  MatNativeDateModule
   ],
   exports: [
   CommonModule,
@@ -30,7 +32,9 @@ import {
    MatMenuModule,
    MatIconModule,
    MatProgressSpinnerModule,
-   MatSelectModule,MatOptionModule
+   MatSelectModule,MatOptionModule,
+   MatDatepickerModule,
+   MatNativeDateModule
    ],
 })
 export class CustomMaterialModule { }
