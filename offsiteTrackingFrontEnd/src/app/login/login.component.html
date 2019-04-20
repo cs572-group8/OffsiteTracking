@@ -4,6 +4,7 @@
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+       
       <form class="example-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       
           
@@ -26,7 +27,7 @@
                 <mat-option value="option">Employee</mat-option>
               </mat-select>
           </mat-form-field>
-     
+          <mat-error>{{serviceErrors?.message}}</mat-error>
       <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
     
     <mat-card-actions>
