@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ClientService } from '../service/client-service.service';
 
 @Component({
   selector: 'app-employee',
@@ -13,7 +14,7 @@ export class EmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   serviceErrors: any = {};
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private service: ClientService) { }
   invalidFirstName() {
     return (this.submitted && this.employeeForm.controls.firstName.errors != null);
   }
@@ -60,15 +61,7 @@ export class EmployeeComponent implements OnInit {
       return;
     }
     else {
-      this.data = this.employeeForm.value;
-      this.http.post('/api/employee/save', this.data)
-        .subscribe((data: any) => {
-          console.log(data);
-        },
-          error => {
-          this.serviceErrors = error.error.error;
-          });
+      this.service.saveSchedule(this.employeeForm.value)
     }
   }
-
 }
