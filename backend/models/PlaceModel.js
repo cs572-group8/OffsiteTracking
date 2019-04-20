@@ -23,6 +23,5 @@ var placeSchema = new mongoose.Schema({
         }
     ]
 }, { collection: 'places' });
-
 placeSchema.index({ "address.location": "2d" });
 module.exports = mongoose.model('Place', placeSchema);
