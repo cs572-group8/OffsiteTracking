@@ -33,10 +33,10 @@ export class EmployeeComponent implements OnInit {
     return (this.submitted && this.employeeForm.controls.address.errors != null);
   }
   invalidCity() {
-    return (this.submitted && this.employeeForm.controls.City.errors != null);
+    return (this.submitted && this.employeeForm.controls.city.errors != null);
   }
   invalidPhoneNumber() {
-    return (this.submitted && this.employeeForm.controls.phoneNumber.errors != null);
+    return (this.submitted && this.employeeForm.controls.phone.errors != null);
   }
 
 
@@ -44,11 +44,13 @@ export class EmployeeComponent implements OnInit {
     this.employeeForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      jobTitle: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      City: ['', [Validators.required]],
-      State: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      type: ['Employee'],
       postalCode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]]
     });
   }
