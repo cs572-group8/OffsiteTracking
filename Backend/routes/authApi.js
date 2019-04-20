@@ -2,21 +2,40 @@ const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
+const bcrypt = require('bcryptjs');
+const cfg = require("../config/config")
 
 router.post('/login', (req, res) => {
-    let loginData = req.body;
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        bcrypt.hash(loginData.password, salt, function (err, hash) {
-            if (err)
-                res.status(500).send("encryption error");
-            loginData.password = hash;
-        });
+     User.findOne({
+      email: req.body.email
+    }, function (err, user) {
+      if (err) throw err;
+      if (!user) {
+         res.status(401).json({ message: 'Authentication failed. User not found.' });
+      } else if (user) {
+        bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+          if (err) throw err;
+          if (isMatch) {
+            console.log('lk;k;l')
+            return res.json(
+                 jwt.sign(
+                  { email: user.email, 
+                    fullName: user.firstName + " " + user.lastName,
+                     _id: user._id,
+                     type:user.type },
+                    cfg.key,
+                  { expiresIn: '1h' }
+                )
+              );
+  
+          }
+          else {
+            res.status(401).json({ message: 'Authentication failed. Wrong password.' })
+          }
+        })
+  
+      }
     });
-
-
-    var token = jwt.sign("{User data String}", key, { expiresIn: 60 * 60 });
-    res.status(200).json({ success: true, token: token })
-    res.json({ response: "res" });
-});
+  })
 
 module.exports = router;
