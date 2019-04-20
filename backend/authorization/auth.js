@@ -7,7 +7,6 @@ router.all('/', (req, res, next) => {
     jwt.verify(req.headers['authorization'], authConfig.key, function (err, decoded) {
         if (err)
             res.status(401).send(err)
-
     });
     next();
 });

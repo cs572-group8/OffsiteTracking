@@ -44,5 +44,5 @@ var userSchema = new mongoose.Schema({
         }
     ]
 }, { collection: 'users' });
-
+userSchema.index({ email: 1 });
 module.exports = mongoose.model('User', userSchema);

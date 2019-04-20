@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var userSchema = new mongoose.Schema({
+var placeSchema = new mongoose.Schema({
     placeName: {
         type: String,
         required: true
@@ -24,4 +24,5 @@ var userSchema = new mongoose.Schema({
     ]
 }, { collection: 'places' });
 
-module.exports = mongoose.model('User', userSchema);
+placeSchema.index({ "address.location": "2d" });
+module.exports = mongoose.model('Place', placeSchema);
