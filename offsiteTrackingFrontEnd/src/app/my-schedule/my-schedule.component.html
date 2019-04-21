@@ -1,18 +1,20 @@
+        <mat-error >{{Confirmation.checkInTime}}</mat-error>
 <ol>
-        <li *ngFor="let schedule of mySchedule">
-            <p>{{schedule.placeName}}</p>
-            <p>{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</p>
-                 <ol>
-                   <li *ngFor="let emp of schedule.schedule">
-                        <a [routerLink]="[emp.employeeId._id]">{{emp.employeeId.fistName}}{{emp.employeeId.lastName}} </a>
-                      <p>{{emp.date}} </p>                
-                                       
-                      <p>{{emp.description}}</p> 
-                      <button  (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button>
-                    </li>
-                    <mat-error>{{Confirmation.checkInTime}}{{CheckTime}}</mat-error>
-               </ol>  
-                     
-        </li>
-       
-      </ol>
+  <li *ngFor="let schedule of mySchedule">
+    <p>{{schedule.placeName}}</p>
+    <p>{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</p>
+    <ol>
+      <li *ngFor="let emp of schedule.schedule">
+        <a [routerLink]="[emp.employeeId._id]">{{emp.employeeId.fistName}}{{emp.employeeId.lastName}} </a>
+        <p>{{emp.date}} </p>
+
+        <p>{{emp.description}}</p>
+        <button
+          (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button>
+      </li>
+
+    </ol>
+    
+  </li>
+ 
+</ol>
