@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ClientService } from '../service/client-service.service';
 import { Observable } from 'rxjs';
+import { GeoService } from '../service/geo.service';
 
 @Component({
   selector: 'app-schedule',
@@ -14,10 +15,10 @@ export class ScheduleComponent implements OnInit {
 
   lat: number = 51.678418;
   lng: number = 7.809007;
-  location: String = '';
+  latlng: String = '';
   locationChosen = false;
 
-  constructor(private formBuilder: FormBuilder, private service: ClientService) {
+  constructor(private formBuilder: FormBuilder, private service: ClientService, private geoservice: GeoService) {
     this.scheduleForm = this.formBuilder.group({
       placeName: ['', [Validators.required]],
       address: this.formBuilder.group({
@@ -43,9 +44,16 @@ export class ScheduleComponent implements OnInit {
 
   onChoseLocation(event) {
     let coords = event.coords;
-    console.log(coords);
-    this.location = `${coords.lat},${coords.lng}`;
+    this.latlng = `${coords.lat},${coords.lng}`;
     this.locationChosen = true;
+    this.geoservice.getLocationInformation(this.latlng).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   private getUserLocation() {
@@ -53,8 +61,6 @@ export class ScheduleComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-
-        navigator.geolocation.watchPosition;
       });
     }
   }

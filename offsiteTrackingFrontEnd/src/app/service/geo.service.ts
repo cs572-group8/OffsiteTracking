@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database'
+import { HttpClient } from '@angular/common/http'
+import { config } from 'src/environments/configKeys';
 
 @Injectable({
   providedIn: 'root'
 })
-//https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true&key=AIzaSyC-NMFFfz2z6i2ueicmi7NxdLaHGtb4pyU
 export class GeoService {
+  googleapi: String = "https://maps.googleapis.com/maps/api/geocode/json?";
+  constructor(public http: HttpClient) {
+  }
 
-  constructor(private db: AngularFireDatabase) {
+  getLocationInformation(latlng) {
+    return this.http.get(`${this.googleapi}latlng=${latlng}&key=${config.googleMapsKey}`)
   }
 }

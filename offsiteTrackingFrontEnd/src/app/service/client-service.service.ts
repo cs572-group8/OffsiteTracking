@@ -22,7 +22,6 @@ export class ClientService {
   }
 
   saveSchedule(data) {
-    console.log(data)
     return this.http.post(`${this.adminApi}/api/admin/schedule`, data)
   }
 }

@@ -16,7 +16,7 @@ import { IsVisibleDirective } from './is-visible.directive';
 import { LogoutDirective } from './logout.directive';
 import { AgmCoreModule } from '@agm/core';
 import { AngularFireModule } from '@angular/fire';
-import { config } from 'src/environments/config';
+import { config } from 'src/environments/configKeys';
 export const fireBaseCongig = config.firebaseConfig
 
 
