@@ -23,13 +23,13 @@
   <table class="example-full-width" cellspacing="0"><tr>
     <td>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="City" formControlName="City" name="City">
+      <input matInput placeholder="City" formControlName="city" name="city">
       <mat-error *ngIf="invalidCity()">Invalid City.</mat-error>
     </mat-form-field>
   </td>
     <td>
       <mat-form-field class="example-full-width" >
-      <input matInput placeholder="State" formControlName="State" name="State">
+      <input matInput placeholder="State" formControlName="state" name="state">
    </mat-form-field>
   </td>
     <td>
@@ -41,14 +41,14 @@
   </tr></table>
 
   <mat-form-field>
-    <mat-select placeholder="Job Title">
+    <mat-select placeholder="Job Title" formControlName="jobTitle">
       <mat-option value="option">Job</mat-option>
       <mat-option value="option">Welder</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="phoneNumber" type="number" formControlName="phoneNumber" name="phoneNumber">
+    <input matInput placeholder="phoneNumber" type="number" formControlName="phone" name="phoneNumber">
     <mat-error *ngIf="invalidPhoneNumber()">Invalid PhoneNumber.</mat-error>
   </mat-form-field>
 

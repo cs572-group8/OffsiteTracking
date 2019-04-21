@@ -1,42 +1,58 @@
-<form class="example-form">
-    <h2>Create a Schedule </h2>
-    <mat-form-field class="example-full-width">
-        <input matInput placeholder="Employee Id" value="ID">
-      </mat-form-field>
+<form [formGroup]="scheduleForm" class="example-form">
+  <h2>Create a Schedule </h2>
 
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Location Name" value="Location" formControlName="placeName">
+  </mat-form-field>
+
+  <div formGroupName="address">
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Location Name" value="Location">
+      <textarea matInput placeholder="Address" formControlName="street">1600 Amphitheatre Pkwy</textarea>
     </mat-form-field>
 
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="City" formControlName="city">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="State" formControlName="state" formControlName="postalCode">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
+            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+
     <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Address">1600 Amphitheatre Pkwy</textarea>
-      </mat-form-field>
-    
-  
-    <table class="example-full-width" cellspacing="0"><tr>
-      <td><mat-form-field class="example-full-width">
-        <input matInput placeholder="City">
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-        <input matInput placeholder="State">
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-        <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
-        <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-      </mat-form-field></td>
-    </tr></table>
+      <input matInput placeholder="Location Name" value="" formControlName="location">
+    </mat-form-field>
+  </div>
+
+  <div formGroupName="schedule">
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Employee Id" formControlName="employeeId">
+        <mat-option value="option">Job</mat-option>
+        <mat-option value="option">Welder</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field>
-        <input matInput type="datetime-local" placeholder="start date">
-      </mat-form-field>
-    
+      <input matInput type="datetime-local" placeholder="start date" formControlName="date">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+  </div>
+  <mat-card-actions>
+    <button mat-raised-button (click)="save()" color="primary">Register</button>
+    <button mat-raised-button type="reset" color="primary">Clear</button>
+  </mat-card-actions>
 
-      <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Description"></textarea>
-      </mat-form-field>
-
-      <mat-card-actions>
-          <button mat-raised-button (click)="login()" color="primary">Register</button>
-          <button mat-raised-button type="reset" color="primary">Clear</button>
-        </mat-card-actions>
-
-  </form>
+</form>

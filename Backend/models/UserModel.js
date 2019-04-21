@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
-    test: String,
     firstName: {
         type: String,
         required: true
@@ -11,6 +10,18 @@ var userSchema = new mongoose.Schema({
         required: true
     },
     jobTitle: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    city: {
         type: String,
         required: true
     },
