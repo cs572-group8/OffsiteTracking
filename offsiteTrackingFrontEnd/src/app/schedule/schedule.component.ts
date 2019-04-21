@@ -16,10 +16,11 @@ export class ScheduleComponent implements OnInit {
   snackBarRef
   showFiller = false;
 
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  lat: number;
+  lng: number;
+  locationChosen = true;
+
   latlng: String = '';
-  locationChosen = false;
 
   employees: any = []
   address: any = {
@@ -54,15 +55,18 @@ export class ScheduleComponent implements OnInit {
         }
       )
     });
+
+    this.getUserLocation()
   }
 
   ngOnInit() {
     this.getEmployees()
-    this.getUserLocation()
   }
 
   onChoseLocation(event) {
     let coords = event.coords;
+    this.lat = coords.lat;
+    this.lng = coords.lng;
     this.latlng = `${coords.lat},${coords.lng}`;
     this.locationChosen = true;
     this.fillAdress();
