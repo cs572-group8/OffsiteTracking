@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ClientService } from '../service/client.service';
+import { ClientService } from '../service/client-service.service';
+
 
 @Component({
   selector: 'app-login',

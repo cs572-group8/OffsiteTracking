@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "/auth": {
       "target": "http://localhost:5000",
       "secure": false,
@@ -15,12 +14,3 @@
      
     }
   }
-=======
-  "*": {
-    "target": "http://localhost:5000",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
-}
->>>>>>> 127472db1caa5ce06ccd56198cfb8c002160ad53

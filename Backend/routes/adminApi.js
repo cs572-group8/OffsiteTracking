@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Place = require('../models/PlaceModel');
+<<<<<<< HEAD
+const ObjectId=require('mongodb').ObjectID;
+=======
 const ObjectId = require('mongodb').ObjectID;
+>>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5
 
 router.post('/schedule', (req, res) => {
     let newSchedule = req.body;
@@ -46,6 +50,14 @@ router.post('/schedule', (req, res) => {
 });
 
 router.get('/schedule/:id', (req, res) => {
+<<<<<<< HEAD
+userid=new ObjectId(req.params.id);
+console.log(userid);
+    Place.find({'schedule.employeeId':new ObjectId(req.params.id)}
+    ,{schedule:1,address:1,location:1,placeName:1}).populate('schedule.employeeId')
+    .then(doc=>res.json(doc));
+   
+=======
     console.log('jkjlkj')
     userid = new ObjectId(req.params.id);
     console.log(userid);
@@ -53,6 +65,7 @@ router.get('/schedule/:id', (req, res) => {
         , { schedule: 1 }).populate('schedule.employeeId')
         .then(doc => res.json(doc));
 
+>>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5
 });
 
 router.get('/schedule')

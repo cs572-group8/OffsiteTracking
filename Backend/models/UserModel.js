@@ -48,7 +48,7 @@ var userSchema = new mongoose.Schema({
     },
     checkin: [
         {
-            placeId: Number,
+            placeName: String,
             checkInDate: Date,
             checkInTime: String,
             status: String
