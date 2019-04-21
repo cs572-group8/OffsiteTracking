@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
-
+const ObjectId=require('mongodb').ObjectID;
 router.get('/save', (req, res) => {
     let user = new User({
         firstName: req.body.firstName,
@@ -23,4 +23,19 @@ router.get('/save', (req, res) => {
     });
 });
 
+  router.post('/checkin',(req,res)=>{
+        console.log("req",req.body);
+        checkin={
+            placeName: req.body.placeName,
+            checkInDate: req.body.checkInDate,
+            checkInTime: req.body.checkInTime,
+            status: req.body.status
+        }
+        User.findOne({_id:new ObjectId(req.body.id)}).then(user=>{
+            user.checkin.push(checkin)
+           user.save().then(user=>{res.json(checkin)})
+        })
+          
+        })
+  
 module.exports = router;

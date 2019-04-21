@@ -54,7 +54,7 @@ export class ScheduleComponent implements OnInit {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
 
-        navigator.geolocation.watchPosition;
+       // navigator.geolocation.watchPosition;
       });
     }
   }
