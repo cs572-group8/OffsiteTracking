@@ -11,7 +11,7 @@ export class ClientService {
   constructor(public http: HttpClient, private router: Router) { }
 
   login(data) {
-
+    return this.http.post('/auth/login', data)
   }
 
   saveEmployee(data) {

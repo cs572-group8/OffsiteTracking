@@ -20,7 +20,9 @@ export class MyScheduleComponent implements OnInit {
         
    }
   ngOnInit(){
-    this.userService.getMySchedule(this.userService.getPayLoad()._id).subscribe((data)=>this.mySchedule=data);
+    this.userService.getMySchedule(this.userService.getPayLoad()._id)
+       .subscribe(
+         (data)=>this.mySchedule=data);
 }
 
 

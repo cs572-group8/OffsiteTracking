@@ -1,11 +1,13 @@
 <ol>
         <li *ngFor="let schedule of mySchedule">
+            <p>{{schedule.placeName}}</p>
                  <ol>
                    <li *ngFor="let emp of schedule.schedule">
                         <a [routerLink]="[emp.employeeId._id]">{{emp.employeeId.fistName}}{{emp.employeeId.lastName}} </a>
-                       {{emp.date}}
-                       {{emp.employeeId.jobTitle}}
-                       {{emp.description}}
+                      <p>{{emp.date}} </p>
+                      
+                      <p> {{emp.employeeId.jobTitle}}</p>                       
+                      <p>{{emp.description}}</p> 
                     </li>
 
                </ol>         
