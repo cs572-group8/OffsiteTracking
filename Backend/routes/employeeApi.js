@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 
 router.get('/save', (req, res) => {
+    console.log(req.body);
     let user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -12,8 +13,8 @@ router.get('/save', (req, res) => {
         city: req.body.city,
         state: req.body.state,
         phone: req.body.phone,
-        email: req.body.email, 
-        type: req.body.type         
+        email: req.body.email,
+        type: req.body.type
     });
 
     user.save(function (err, firstName) {

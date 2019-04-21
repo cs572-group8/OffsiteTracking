@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { ClientService } from '../service/client-service.service';
 import { Observable } from 'rxjs';
 import { GeoService } from '../service/geo.service';
+import { DataService } from '../service/data.service';
 
 @Component({
   selector: 'app-schedule',
@@ -17,8 +18,20 @@ export class ScheduleComponent implements OnInit {
   lng: number = 7.809007;
   latlng: String = '';
   locationChosen = false;
+  address: any = {
+    city: "",
+    country: "",
+    postalCode: "",
+    state: "",
+    street: ""
+  }
 
-  constructor(private formBuilder: FormBuilder, private service: ClientService, private geoservice: GeoService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: ClientService,
+    private dataservice: DataService,
+    private geoservice: GeoService
+  ) {
     this.scheduleForm = this.formBuilder.group({
       placeName: ['', [Validators.required]],
       address: this.formBuilder.group({
@@ -46,14 +59,17 @@ export class ScheduleComponent implements OnInit {
     let coords = event.coords;
     this.latlng = `${coords.lat},${coords.lng}`;
     this.locationChosen = true;
-    this.geoservice.getLocationInformation(this.latlng).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    this.fillAdress();
+  }
+
+  fillAdress() {
+    this.geoservice.getLocationInformation(this.latlng)
+    this.dataservice.emitter.subscribe(res => {
+      this.address.street = res.street
+      this.address.city = res.city
+      this.address.state = res.state
+      this.address.postalCode = res.postalCode
+    })
   }
 
   private getUserLocation() {

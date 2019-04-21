@@ -6,8 +6,10 @@ const ObjectId = require('mongodb').ObjectID;
 
 router.post('/schedule', (req, res) => {
     let newSchedule = req.body;
+    console.log(newSchedule)
     newSchedule.address.location = newSchedule.address.location.split(',')
     newSchedule.address.postalCode = parseInt(newSchedule.address.postalCode)
+    newSchedule.schedule.employeeId = newSchedule.schedule.employeeId
     let place = new Place(req.body);
     place.save(req.body)
         .then(data => {
