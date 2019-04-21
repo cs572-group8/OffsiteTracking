@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ClientService } from '../service/client-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -14,7 +15,7 @@ export class EmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   serviceErrors: any = {};
 
-  constructor(private formBuilder: FormBuilder, private service: ClientService) { }
+  constructor(private formBuilder: FormBuilder, private service: ClientService, private router:Router) { }
   invalidFirstName() {
     return (this.submitted && this.employeeForm.controls.firstName.errors != null);
   }
@@ -61,7 +62,16 @@ export class EmployeeComponent implements OnInit {
       return;
     }
     else {
-      this.service.saveSchedule(this.employeeForm.value)
+      this.service.saveEmployee(this.employeeForm.value)
+      .subscribe(
+        (data: any) => {
+          this.service.saveEmployee(data);
+          console.log('employee saved successful');
+          return this.router.navigate(['user']);
+        },
+        error => { this.serviceErrors = error.error }
+
+      );
     }
   }
 }

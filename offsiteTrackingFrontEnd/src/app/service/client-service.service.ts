@@ -14,7 +14,7 @@ export class ClientService {
   }
 
   saveEmployee(data) {
-
+    return this.http.post(`${this.adminApi}/api/employee/save`, data);
   }
 
   getEmployees() {

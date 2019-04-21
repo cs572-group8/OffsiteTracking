@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 
-router.get('/save', (req, res) => {
+router.post('/save', (req, res) => {
     console.log(req.body);
     let user = new User({
         firstName: req.body.firstName,
@@ -17,11 +17,7 @@ router.get('/save', (req, res) => {
         type: req.body.type
     });
 
-    user.save(function (err, firstName) {
-        if (err)
-            res.status(500).send("Failed");;
-        res.json(user);
-    });
+    user.save(user)
 });
 
-module.exports = router;
+module.exports = router
