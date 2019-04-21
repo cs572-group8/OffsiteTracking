@@ -65,7 +65,7 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onChoseLocation($event)">
-      <agm-marker [latitude]="lat" [longitude]="lng">
+      <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="locationChosen">
         <agm-info-window>
           <h3>Howdy</h3>
           <p>Here I am</p>
