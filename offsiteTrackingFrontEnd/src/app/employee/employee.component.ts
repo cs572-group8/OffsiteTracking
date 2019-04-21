@@ -2,46 +2,42 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ClientService } from '../service/client-service.service';
+import { Router } from '@angular/router';
+import { DataService } from '../service/data.service';
+import { GeoService } from '../service/geo.service';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
+
 export class EmployeeComponent implements OnInit {
+
+  lat: number;
+  lng: number;
+  latlng: String = '';
+  locationChosen = false;
+  address: any = {
+    city: "",
+    country: "",
+    postalCode: "",
+    state: "",
+    street: ""
+  }
+
   data;
   submitted = false;
   employeeForm: FormGroup;
-  serviceErrors: any = {};
+  errorMessage: String;
 
-  constructor(private formBuilder: FormBuilder, private service: ClientService) { }
-  invalidFirstName() {
-    return (this.submitted && this.employeeForm.controls.firstName.errors != null);
-  }
-
-  invalidLastName() {
-    return (this.submitted && this.employeeForm.controls.lastName.errors != null);
-  }
-
-  invalidEmail() {
-    return (this.submitted && this.employeeForm.controls.email.errors != null);
-  }
-
-  invalidPostalCode() {
-    return (this.submitted && this.employeeForm.controls.postalCode.errors != null);
-  }
-  invalidAddress() {
-    return (this.submitted && this.employeeForm.controls.address.errors != null);
-  }
-  invalidCity() {
-    return (this.submitted && this.employeeForm.controls.city.errors != null);
-  }
-  invalidPhoneNumber() {
-    return (this.submitted && this.employeeForm.controls.phone.errors != null);
-  }
-
-
-  ngOnInit() {
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: ClientService,
+    private dataservice: DataService,
+    private geoservice: GeoService,
+    private router: Router
+  ) {
     this.employeeForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -52,16 +48,55 @@ export class EmployeeComponent implements OnInit {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       type: ['Employee'],
-      postalCode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]]
+      postalCode: ['', [Validators.required]]
     });
   }
+
+  ngOnInit() {
+    this.getUserLocation()
+  }
+
+  private getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+      });
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.employeeForm.invalid == true) {
       return;
+    } else {
+      this.service.saveEmployee(this.employeeForm.value)
+        .subscribe(
+          (data: any) => {
+            this.service.saveEmployee(data);
+            console.log('employee saved successful');
+            return this.router.navigate(['user']);
+          },
+          error => { this.errorMessage = error.error.message }
+        );
     }
-    else {
-      this.service.saveSchedule(this.employeeForm.value)
-    }
+  }
+
+  onChoseLocation(event) {
+    console.log(event)
+    let coords = event.coords;
+    this.latlng = `${coords.lat},${coords.lng}`;
+    this.locationChosen = true;
+    this.fillAdress();
+  }
+
+  fillAdress() {
+    this.geoservice.getLocationInformation(this.latlng)
+    this.dataservice.emitter.subscribe(res => {
+      this.address.street = res.street
+      this.address.city = res.city
+      this.address.state = res.state
+      this.address.postalCode = res.postalCode
+    })
   }
 }

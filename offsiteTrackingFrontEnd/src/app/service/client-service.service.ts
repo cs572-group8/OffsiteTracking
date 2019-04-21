@@ -14,15 +14,14 @@ export class ClientService {
   }
 
   saveEmployee(data) {
-
+    return this.http.post(`${this.adminApi}/api/employee/save`, data);
   }
 
   getEmployees() {
-
+    return this.http.get(`${this.adminApi}/api/employee/all`)
   }
 
   saveSchedule(data) {
-    console.log(data)
     return this.http.post(`${this.adminApi}/api/admin/schedule`, data)
   }
 }

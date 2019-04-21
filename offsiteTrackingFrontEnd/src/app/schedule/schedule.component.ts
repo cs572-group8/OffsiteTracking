@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ClientService } from '../service/client-service.service';
 import { Observable } from 'rxjs';
+import { GeoService } from '../service/geo.service';
+import { DataService } from '../service/data.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-schedule',
@@ -10,14 +13,30 @@ import { Observable } from 'rxjs';
 })
 export class ScheduleComponent implements OnInit {
   scheduleForm: FormGroup;
+  snackBarRef
   showFiller = false;
 
   lat: number = 51.678418;
   lng: number = 7.809007;
-  location: String = '';
+  latlng: String = '';
   locationChosen = false;
 
-  constructor(private formBuilder: FormBuilder, private service: ClientService) {
+  employees: any = []
+  address: any = {
+    city: "",
+    country: "",
+    postalCode: "",
+    state: "",
+    street: ""
+  }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: ClientService,
+    private dataservice: DataService,
+    private geoservice: GeoService,
+    private snackBar: MatSnackBar
+  ) {
     this.scheduleForm = this.formBuilder.group({
       placeName: ['', [Validators.required]],
       address: this.formBuilder.group({
@@ -38,14 +57,25 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getEmployees()
     this.getUserLocation()
   }
 
   onChoseLocation(event) {
     let coords = event.coords;
-    console.log(coords);
-    this.location = `${coords.lat},${coords.lng}`;
+    this.latlng = `${coords.lat},${coords.lng}`;
     this.locationChosen = true;
+    this.fillAdress();
+  }
+
+  fillAdress() {
+    this.geoservice.getLocationInformation(this.latlng)
+    this.dataservice.emitter.subscribe(res => {
+      this.address.street = res.street.trim()
+      this.address.city = res.city.trim()
+      this.address.state = res.state.trim()
+      this.address.postalCode = res.postalCode.trim()
+    })
   }
 
   private getUserLocation() {
@@ -53,8 +83,11 @@ export class ScheduleComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+<<<<<<< HEAD
 
        // navigator.geolocation.watchPosition;
+=======
+>>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5
       });
     }
   }
@@ -72,7 +105,6 @@ export class ScheduleComponent implements OnInit {
               if ((typeof coordinate[0] === 'number') && (typeof coordinate[1] === 'number')) {
                 if ((coordinate[0] >= -180 && coordinate[0] <= 180) &&
                   (coordinate[1] >= -180 && coordinate[1] <= 180)) {
-                  console.log(coordinate)
                   resolve(null)
                 } else {
                   resolve({ 'invalid': true })
@@ -95,11 +127,25 @@ export class ScheduleComponent implements OnInit {
   save() {
     this.service.saveSchedule(this.scheduleForm.value).subscribe(
       res => {
-        console.log(res);
+        let response: any = res;
+        Promise.resolve()
+          .then(() => {
+            this.snackBar.open(response.message, 'Close', { duration: 10000 });
+          });
       },
       err => {
         console.log(err);
       }
+    )
+  }
+
+  showSnackBar(message) {
+  }
+
+  getEmployees() {
+    this.service.getEmployees().subscribe(
+      res => { this.employees = res },
+      err => { console.log(err) }
     )
   }
 }

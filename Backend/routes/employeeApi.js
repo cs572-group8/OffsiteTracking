@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
+<<<<<<< HEAD
 const ObjectId=require('mongodb').ObjectID;
 router.get('/save', (req, res) => {
     let user = new User({
@@ -39,3 +39,44 @@ router.get('/save', (req, res) => {
         })
   
 module.exports = router;
+=======
+var bcrypt = require('bcryptjs');
+
+const defaultPass = "employee";
+router.post('/save', (req, res) => {
+    User.findOne(
+        { email: req.body.email },
+        (err, doc) => {
+            if (err) throw err;
+            if (doc == null) {
+                bcrypt.hash(defaultPass, 10, function (err, hash) {
+                    if (err) throw err;
+                    req.body.password = hash;
+                    let user = new User(req.body);
+                    user.save()
+                        .then(data => {
+                            res.status(200).json({ success: true, message: "Employee registered succesfuly" })
+                        })
+                        .catch(err => {
+                            res.status(400).json({ succes: false, error: err })
+                        })
+                });
+            } else {
+                res.status(409).json({ success: false, message: "Email address is already used please use other Email address!" })
+            }
+        }
+    );
+});
+
+router.get('/all', (req, res) => {
+    User.find(
+        {},
+        { _id: 1, firstName: 1, lastName: 1 },
+        function (err, doc) {
+            if (err) throw err
+            res.status(200).json(doc)
+        })
+})
+
+module.exports = router
+>>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5
