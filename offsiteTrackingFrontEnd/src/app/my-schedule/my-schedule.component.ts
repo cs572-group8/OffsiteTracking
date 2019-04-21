@@ -1,3 +1,4 @@
+import { UserService } from './../service/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-schedule.component.scss']
 })
 export class MyScheduleComponent implements OnInit {
+   mySchedule:any=[];
+  constructor(private userService:UserService) {
+        
+   }
+  ngOnInit(){
+    this.userService.getMySchedule(this.userService.getPayLoad()._id).subscribe((data)=>this.mySchedule=data);
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+}
 }

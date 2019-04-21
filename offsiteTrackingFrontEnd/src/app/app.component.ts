@@ -13,10 +13,7 @@ export class AppComponent implements OnInit {
   title = 'offsiteTrackingFrontEnd';
 
   ngOnInit(){
-    this.user= this.userService.getPayLoad().type==='admin'?true:false;
-    return this.user;
-    console.log("where",this.user);
-  }
+      }
  
   showSchedule(){
     this.router.navigateByUrl('Schedule');
@@ -24,4 +21,17 @@ export class AppComponent implements OnInit {
   showEmployee(){
     this.router.navigateByUrl('user');
   }
+  showMyLogout(){
+    localStorage.removeItem('jwt');
+    this.router.navigateByUrl('');
+  }
+  showMySchedule(){
+    this.router.navigateByUrl('mySchedule');
+   //this.userService.getMySchedule();
+  }
+  onLogout() {
+    this.userService.logOut();
+  }
+
+
 }

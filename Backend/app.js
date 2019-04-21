@@ -13,9 +13,9 @@ app.use(express.json());
 
 app.use(db());
 
-app.use('*/api', auth);
+//app.use('*/api', auth);
 app.use("/auth", authApi);
-app.use("/api", userApi);
+//app.use("/api", userApi);
 app.use("/api", adminApi);
 
 app.listen(port, () => console.log(`listening port ${port}`));

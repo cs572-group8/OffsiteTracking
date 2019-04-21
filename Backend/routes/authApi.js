@@ -16,15 +16,14 @@ router.post('/login', (req, res) => {
         bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
           if (err) throw err;
           if (isMatch) {
-            console.log('lk;k;l')
-            return res.json(
+             return res.json(
                  jwt.sign(
                   { email: user.email, 
                     fullName: user.firstName + " " + user.lastName,
                      _id: user._id,
                      type:user.type },
                     cfg.key,
-                  { expiresIn: '1h' }
+                  { expiresIn: '3000' }
                 )
               );
   

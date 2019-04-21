@@ -12,6 +12,9 @@ import { LoginComponent } from './login/login.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { HttpClientModule } from '@angular/common/http';
+import { IsVisibleDirective } from './is-visible.directive';
+import { LogoutDirective } from './logout.directive';
+
 
 @NgModule({
   declarations: [
@@ -20,6 +23,9 @@ import { HttpClientModule } from '@angular/common/http';
     EmployeeComponent,
     ScheduleComponent,
     MyScheduleComponent,
+    IsVisibleDirective,
+    LogoutDirective,
+    
     
   ],
   imports: [
