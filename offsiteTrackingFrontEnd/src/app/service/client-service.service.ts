@@ -18,7 +18,7 @@ export class ClientService {
   }
 
   getEmployees() {
-
+    return this.http.get(`${this.adminApi}/api/employee/all`)
   }
 
   saveSchedule(data) {

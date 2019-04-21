@@ -16,8 +16,6 @@ export class GeoService {
       res => {
         let locationInfo: any = res
         let info: any = {}
-
-        console.log(locationInfo.results[0])
         const formatted_address = locationInfo.results[0].formatted_address.split(',')
         info.street = formatted_address[0]
         info.city = formatted_address[1]

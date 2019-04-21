@@ -4,6 +4,7 @@ import { ClientService } from '../service/client-service.service';
 import { Observable } from 'rxjs';
 import { GeoService } from '../service/geo.service';
 import { DataService } from '../service/data.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-schedule',
@@ -12,12 +13,15 @@ import { DataService } from '../service/data.service';
 })
 export class ScheduleComponent implements OnInit {
   scheduleForm: FormGroup;
+  snackBarRef
   showFiller = false;
 
   lat: number = 51.678418;
   lng: number = 7.809007;
   latlng: String = '';
   locationChosen = false;
+
+  employees: any = []
   address: any = {
     city: "",
     country: "",
@@ -30,7 +34,8 @@ export class ScheduleComponent implements OnInit {
     private formBuilder: FormBuilder,
     private service: ClientService,
     private dataservice: DataService,
-    private geoservice: GeoService
+    private geoservice: GeoService,
+    private snackBar: MatSnackBar
   ) {
     this.scheduleForm = this.formBuilder.group({
       placeName: ['', [Validators.required]],
@@ -52,6 +57,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getEmployees()
     this.getUserLocation()
   }
 
@@ -65,10 +71,10 @@ export class ScheduleComponent implements OnInit {
   fillAdress() {
     this.geoservice.getLocationInformation(this.latlng)
     this.dataservice.emitter.subscribe(res => {
-      this.address.street = res.street
-      this.address.city = res.city
-      this.address.state = res.state
-      this.address.postalCode = res.postalCode
+      this.address.street = res.street.trim()
+      this.address.city = res.city.trim()
+      this.address.state = res.state.trim()
+      this.address.postalCode = res.postalCode.trim()
     })
   }
 
@@ -94,7 +100,6 @@ export class ScheduleComponent implements OnInit {
               if ((typeof coordinate[0] === 'number') && (typeof coordinate[1] === 'number')) {
                 if ((coordinate[0] >= -180 && coordinate[0] <= 180) &&
                   (coordinate[1] >= -180 && coordinate[1] <= 180)) {
-                  console.log(coordinate)
                   resolve(null)
                 } else {
                   resolve({ 'invalid': true })
@@ -117,11 +122,25 @@ export class ScheduleComponent implements OnInit {
   save() {
     this.service.saveSchedule(this.scheduleForm.value).subscribe(
       res => {
-        console.log(res);
+        let response: any = res;
+        Promise.resolve()
+          .then(() => {
+            this.snackBar.open(response.message, 'Close', { duration: 10000 });
+          });
       },
       err => {
         console.log(err);
       }
+    )
+  }
+
+  showSnackBar(message) {
+  }
+
+  getEmployees() {
+    this.service.getEmployees().subscribe(
+      res => { this.employees = res },
+      err => { console.log(err) }
     )
   }
 }

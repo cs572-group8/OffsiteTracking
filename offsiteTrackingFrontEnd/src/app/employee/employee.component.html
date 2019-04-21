@@ -1,65 +1,81 @@
-<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" >
-<div class="example-container">
-    <h2>Employee Information</h2>
-  <table class="example-full-width" cellspacing="0"><tr>
-    <td>
-      <mat-form-field class="example-full-width">
-      <input matInput placeholder="First name" formControlName="firstName" name="firstName" required>
-      <mat-error *ngIf="invalidFirstName()">Invalid FirstName.</mat-error>
-      </mat-form-field>
-  </td>
-    <td>
-      <mat-form-field class="example-full-width">
-      <input matInput placeholder="Long Last Name That Will Be Truncated" formControlName="lastName" name="lastName">
-      <mat-error *ngIf="invalidLastName()">Invalid LastName.</mat-error>
-    </mat-form-field>
-  </td>
-  </tr>
-</table>
-    <mat-form-field class="example-full-width">
-      <textarea matInput placeholder="address" formControlName="address" name="address">1600 Amphitheatre Pkwy</textarea>
-      <mat-error *ngIf="invalidAddress()">Invalid address.</mat-error>
-    </mat-form-field>
-  <table class="example-full-width" cellspacing="0"><tr>
-    <td>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="City" formControlName="city" name="city">
-      <mat-error *ngIf="invalidCity()">Invalid City.</mat-error>
-    </mat-form-field>
-  </td>
-    <td>
-      <mat-form-field class="example-full-width" >
-      <input matInput placeholder="State" formControlName="state" name="state">
-   </mat-form-field>
-  </td>
-    <td>
-      <mat-form-field class="example-full-width">
-      <input matInput #postalCode maxlength="5" formControlName="postalCode" name="postalCode" placeholder="Postal Code" value="94043">
-            <!-- <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint> -->
-            <mat-error *ngIf="invalidPostalCode()">Invalid postalCode.</mat-error>
-    </mat-form-field></td>
-  </tr></table>
+<mat-grid-list cols="2">
+  <mat-grid-tile>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <div class="example-container">
+        <h2>Employee Information</h2>
+        <mat-error class="txt-center" *ngIf="errorMessage">{{errorMessage}}</mat-error>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="First Name" formControlName="firstName" name="firstName" required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Last Name" formControlName="lastName" name="lastName">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="address" formControlName="address" name="address"
+            [value]="address.street">1600 Amphitheatre Pkwy</textarea>
+        </mat-form-field>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="City" formControlName="city" name="city" [value]="address.city">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="State" formControlName="state" name="state" [value]="address.state">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput #postalCode maxlength="5" formControlName="postalCode" name="postalCode"
+                  placeholder="Postal Code" [value]="address.postalCode">
+                <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
 
-  <mat-form-field>
-    <mat-select placeholder="Job Title" formControlName="jobTitle">
-      <mat-option value="option">Job</mat-option>
-      <mat-option value="option">Welder</mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Job Title" formControlName="jobTitle">
+            <mat-option value="Administrative Director">Administrative Director</mat-option>
+            <mat-option value="Legal Secretary">Legal Secretary</mat-option>
+            <mat-option value="Assistant Branch Manager">Assistant Branch Manager</mat-option>
+            <mat-option value="Bank Examiner">Bank Examiner</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="phoneNumber" type="number" formControlName="phone" name="phoneNumber">
-    <mat-error *ngIf="invalidPhoneNumber()">Invalid PhoneNumber.</mat-error>
-  </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="phoneNumber" type="number" formControlName="phone" name="phoneNumber">
+        </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="email" formControlName="email" name="email" required>
-      <mat-error *ngIf="invalidEmail()">Invalid email address.</mat-error>
-  </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="email" formControlName="email" name="email" required>
+        </mat-form-field>
 
-  <mat-card-actions>
-    <button mat-raised-button type="submit" color="primary">Register</button>
-    <button mat-raised-button type="reset" color="primary">Clear</button>
-  </mat-card-actions>
-</div>
-</form> 
+        <mat-card-actions>
+          <button mat-raised-button type="submit" color="primary" [disabled]="!employeeForm.valid">Register</button>
+          <button mat-raised-button type="reset" color="primary">Clear</button>
+        </mat-card-actions>
+      </div>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onChoseLocation($event)">
+      <agm-marker [latitude]="lat" [longitude]="lng">
+        <agm-info-window>
+          <h3>Howdy</h3>
+          <p>Here I am</p>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </mat-grid-tile>
+</mat-grid-list>

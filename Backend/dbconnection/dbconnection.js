@@ -10,10 +10,6 @@ const uri = `mongodb+srv://${username}:${password}@mwacluster-mdjim.mongodb.net/
 function dbConnection() {
     return function (req, res, next) {
         mongoose.connect(uri, { useNewUrlParser: true });
-        mongoose.connection.on('connected', function () {
-            console.log("connected")
-        });
-
         req.db = mongoose;
         next();
     };
