@@ -78,7 +78,6 @@ export class EmployeeComponent implements OnInit {
             return this.router.navigate(['user']);
           },
           error => { this.errorMessage = error.error.message }
-
         );
     }
   }

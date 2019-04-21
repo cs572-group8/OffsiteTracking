@@ -16,14 +16,14 @@ router.post('/save', (req, res) => {
                     let user = new User(req.body);
                     user.save()
                         .then(data => {
-                            res.status(200).json({ success: true, message: "Employee registred succesfuly" })
+                            res.status(200).json({ success: true, message: "Employee registered succesfuly" })
                         })
                         .catch(err => {
                             res.status(400).json({ succes: false, error: err })
                         })
                 });
             } else {
-                res.status(409).json({ success: false, message: "Email address already used plese use other Email address." })
+                res.status(409).json({ success: false, message: "Email address is already used please use other Email address!" })
             }
         }
     );
