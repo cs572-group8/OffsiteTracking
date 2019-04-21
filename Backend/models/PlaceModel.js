@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema=mongoose.Schema
+const Schema = mongoose.Schema
 var placeSchema = new mongoose.Schema({
     placeName: {
         type: String,
@@ -14,10 +14,10 @@ var placeSchema = new mongoose.Schema({
     },
     schedule: [
         {
-            employeeId: { 
-                type:Schema.Types.ObjectId,
-                ref:'User'
-             },
+            employeeId: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
             date: {
                 type: Date, required: true,
                 default: Date.now()
@@ -25,7 +25,7 @@ var placeSchema = new mongoose.Schema({
             description: { type: String, required: true }
         }
     ]
-  
+
 
 }, { collection: 'places' });
 placeSchema.index({ "address.location": "2d" });

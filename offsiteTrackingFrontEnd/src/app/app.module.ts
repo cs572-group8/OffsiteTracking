@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,10 @@ import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { HttpClientModule } from '@angular/common/http';
 import { IsVisibleDirective } from './is-visible.directive';
 import { LogoutDirective } from './logout.directive';
+import { AgmCoreModule } from '@agm/core';
+import { AngularFireModule } from '@angular/fire';
+import { config } from 'src/environments/config';
+export const fireBaseCongig = config.firebaseConfig
 
 
 @NgModule({
@@ -25,8 +29,7 @@ import { LogoutDirective } from './logout.directive';
     MyScheduleComponent,
     IsVisibleDirective,
     LogoutDirective,
-    
-    
+
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,11 @@ import { LogoutDirective } from './logout.directive';
     CustomMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: config.googleMapsKey
+    }),
+    AngularFireModule.initializeApp(fireBaseCongig)
   ],
   providers: [],
   bootstrap: [AppComponent]
