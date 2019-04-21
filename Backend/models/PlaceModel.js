@@ -14,7 +14,7 @@ var placeSchema = new mongoose.Schema({
     },
     schedule: [
         {
-            employeeId: { type: Number, required: true },
+            employeeId: { type: String, required: true },
             date: {
                 type: Date, required: true,
                 default: Date.now()

@@ -1,58 +1,74 @@
-<form [formGroup]="scheduleForm" class="example-form">
-  <h2>Create a Schedule </h2>
+<mat-grid-list cols="2">
+  <mat-grid-tile>
+    <form [formGroup]="scheduleForm">
+      <h2>Create a Schedule </h2>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Location Name" value="Location" formControlName="placeName">
-  </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Place Name" value="Place Name" formControlName="placeName">
+      </mat-form-field>
 
-  <div formGroupName="address">
-    <mat-form-field class="example-full-width">
-      <textarea matInput placeholder="Address" formControlName="street">1600 Amphitheatre Pkwy</textarea>
-    </mat-form-field>
+      <div formGroupName="address">
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Address" formControlName="street">1600 Amphitheatre Pkwy</textarea>
+        </mat-form-field>
 
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="City" formControlName="city">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="State" formControlName="state" formControlName="postalCode">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
-            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="City" formControlName="city">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="State" formControlName="state">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043"
+                  formControlName="postalCode">
+                <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
 
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Location Name" value="" formControlName="location">
-    </mat-form-field>
-  </div>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="[longitude,latitude]" id="location" [value]="location"
+            formControlName="location">
+        </mat-form-field>
+      </div>
 
-  <div formGroupName="schedule">
-    <mat-form-field class="example-full-width">
-      <mat-select placeholder="Employee Id" formControlName="employeeId">
-        <mat-option value="option">Job</mat-option>
-        <mat-option value="option">Welder</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="datetime-local" placeholder="start date" formControlName="date">
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <textarea matInput placeholder="Description" formControlName="description"></textarea>
-    </mat-form-field>
-  </div>
-  <mat-card-actions>
-    <button mat-raised-button (click)="save()" color="primary">Register</button>
-    <button mat-raised-button type="reset" color="primary">Clear</button>
-  </mat-card-actions>
+      <div formGroupName="schedule">
+        <mat-form-field class="example-full-width">
+          <mat-select placeholder="Employee Id" formControlName="employeeId">
+            <mat-option value="job">Job</mat-option>
+            <mat-option value="welder">Welder</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="datetime-local" placeholder="start date" formControlName="date">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <mat-card-actions>
+        <button mat-raised-button (click)="save()" color="primary" [disabled]="!scheduleForm.valid">Register</button>
+        <button mat-raised-button type="reset" color="primary">Clear</button>
+      </mat-card-actions>
 
-</form>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onChoseLocation($event)">
+      <agm-marker [latitude]="lat" [longitude]="lng">
+        <agm-info-window>
+          <h3>Howdy</h3>
+          <p>Here I am</p>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </mat-grid-tile>
+</mat-grid-list>

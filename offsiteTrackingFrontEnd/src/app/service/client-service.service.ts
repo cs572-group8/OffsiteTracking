@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ClientService {
-
   adminApi = "http://localhost:5000"
   constructor(public http: HttpClient, private router: Router) { }
 
@@ -21,7 +20,9 @@ export class ClientService {
   getEmployees() {
 
   }
+
   saveSchedule(data) {
+    console.log(data)
     return this.http.post(`${this.adminApi}/api/admin/schedule`, data)
   }
 }

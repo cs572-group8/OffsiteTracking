@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,11 @@ import { LoginComponent } from './login/login.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AgmCoreModule } from '@agm/core';
+import { AngularFireModule } from '@angular/fire';
+import { config } from 'src/environments/config';
+export const fireBaseCongig = config.firebaseConfig
+
 
 @NgModule({
   declarations: [
@@ -20,7 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     EmployeeComponent,
     ScheduleComponent,
     MyScheduleComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -29,7 +34,11 @@ import { HttpClientModule } from '@angular/common/http';
     CustomMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: config.googleMapsKey
+    }),
+    AngularFireModule.initializeApp(fireBaseCongig)
   ],
   providers: [],
   bootstrap: [AppComponent]
