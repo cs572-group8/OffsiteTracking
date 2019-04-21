@@ -43,7 +43,7 @@ export class UserService {
    }
 
     getMySchedule(id:string){
-      return this.http.get('/api/schedule/'+id)
+      return this.http.get('/api/admin/schedule/'+id)
       }
 
 }

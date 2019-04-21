@@ -13,15 +13,10 @@ app.use(express.json());
 
 app.use(db());
 
-//app.use('*/api', auth);
+app.use('*/api', auth);
 app.use("/auth", authApi);
-<<<<<<< HEAD
-//app.use("/api", userApi);
-app.use("/api", adminApi);
-=======
 app.use("/api/employee", userApi);
 app.use("/api/admin", adminApi);
-app.all('/*', app.Router().end())
->>>>>>> 127472db1caa5ce06ccd56198cfb8c002160ad53
+//app.all('/*', app.Router().end())
 
 app.listen(port, () => console.log(`listening port ${port}`));

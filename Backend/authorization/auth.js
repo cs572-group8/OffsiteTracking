@@ -1,11 +1,7 @@
 const express = require("express");
 const jwt = require('jsonwebtoken');
-<<<<<<< HEAD
 const authConfig = require('../config/config')
 
-=======
-const config = require('../config/config');
->>>>>>> 127472db1caa5ce06ccd56198cfb8c002160ad53
 const router = express.Router();
 
 router.all('/', (req, res, next) => {
