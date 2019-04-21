@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
+<<<<<<< HEAD
+const cfg = require("../config/config");
+=======
 const cfg = require("../config/config")
+>>>>>>> 127472db1caa5ce06ccd56198cfb8c002160ad53
 
 
 const dbname = cfg.dbname;

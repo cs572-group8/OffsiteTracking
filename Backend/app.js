@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(db());
 
-app.use('*/api', auth);
+//app.use('*/api', auth);
 app.use("/auth", authApi);
 app.use("/api/employee", userApi);
 app.use("/api/admin", adminApi);
