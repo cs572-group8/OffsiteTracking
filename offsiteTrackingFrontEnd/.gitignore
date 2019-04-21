@@ -45,9 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-<<<<<<< HEAD
-
-
-=======
-enviroment/config.ts
->>>>>>> 92fee433278828320bc156f0470503873efa93a6
+enviroment/configKeys.ts

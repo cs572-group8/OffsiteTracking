@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require('../models/UserModel');
-<<<<<<< HEAD
 const ObjectId=require('mongodb').ObjectID;
+
 router.get('/save', (req, res) => {
     let user = new User({
         firstName: req.body.firstName,
@@ -39,7 +39,6 @@ router.get('/save', (req, res) => {
         })
   
 module.exports = router;
-=======
 var bcrypt = require('bcryptjs');
 
 const defaultPass = "employee";
@@ -79,4 +78,3 @@ router.get('/all', (req, res) => {
 })
 
 module.exports = router
->>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5

@@ -17,8 +17,7 @@ export class MyScheduleComponent implements OnInit {
       checkInTime: "",
       status: ""
     }
-    //CheckTime:any={};
-  mySchedule: any = [];
+   mySchedule: any = [];
 
   constructor(private userService: UserService) {}
 

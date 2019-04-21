@@ -83,11 +83,6 @@ export class ScheduleComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-<<<<<<< HEAD
-
-       // navigator.geolocation.watchPosition;
-=======
->>>>>>> 8cd0344bc440f9e8686584cc3dad993a07271fe5
       });
     }
   }
