@@ -16,19 +16,19 @@ router.post('/login', (req, res) => {
       bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
-          return res.json(
-            jwt.sign(
-              {
-                email: user.email,
-                fullName: user.firstName + " " + user.lastName,
-                _id: user._id,
-                type: user.type
-              },
-              cfg.key,
-              { expiresIn: '3000' }
-            )
+          token = jwt.sign({
+            email: user.email,
+            fullName: user.firstName + " " + user.lastName,
+            _id: user._id,
+            type: user.type
+          }, cfg.key, { expiresIn: 60 * 60 }
           );
-
+          console.log(token)
+          return res.json({
+            name: `${user.firstName} ${user.lastName}`,
+            userType: user.type,
+            token: token
+          });
         }
         else {
           res.status(401).json({ message: 'Authentication failed. Wrong password.' })

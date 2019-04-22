@@ -1,18 +1,23 @@
 const express = require("express");
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/config')
-
+const config = require('../config/config')
 const router = express.Router();
 
-router.all('/', (req, res, next) => {
-    //var hash = bcrypt.hashSync("password", 10);
-    //bcrypt.compareSync(myPlaintextPassword, hash);
-
+router.all('*/', (req, res, next) => {
     jwt.verify(req.headers['authorization'], config.key, function (err, decoded) {
-        if (err)
-            res.status(401).send(err)
+        if (err) {
+            return res.status(401).send({ succes: false, message: err })
+        }
+        decoded = jwt.decode(req.headers['authorization'], config.key)
+        if (decoded.type !== 'admin' && req._parsedUrl.href.indexOf(decoded.type) === -1) {
+            return res.status(401).json({
+                succes: false,
+                message: "You don't have a premission to acces."
+            })
+        }
+
+        next();
     });
-    next();
 });
 
 module.exports = router;

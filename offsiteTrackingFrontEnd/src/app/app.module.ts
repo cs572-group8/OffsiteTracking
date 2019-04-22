@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { MyScheduleComponent } from './my-schedule/my-schedule.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IsVisibleDirective } from './is-visible.directive';
 import { LogoutDirective } from './logout.directive';
 import { AgmCoreModule } from '@agm/core';
@@ -19,6 +19,11 @@ import { AngularFireModule } from '@angular/fire';
 import { config } from 'src/environments/configKeys';
 import { GeospatialComponent } from './geospatial/geospatial.component';
 import { AgmDirectionModule } from 'agm-direction';
+import { LogoutComponent } from './logout/logout.component';
+import { metaReducers, reducers } from './redux/reducers';
+import { StoreModule } from '@ngrx/store';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 
 export const fireBaseCongig = config.firebaseConfig
 
@@ -34,10 +39,15 @@ export const fireBaseCongig = config.firebaseConfig
     LogoutDirective,
     GeospatialComponent,
 
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10, // Retains last 10 states
+    }),
     BrowserAnimationsModule,
     CustomMaterialModule,
     FormsModule,
@@ -49,7 +59,7 @@ export const fireBaseCongig = config.firebaseConfig
     AngularFireModule.initializeApp(fireBaseCongig),
     AgmDirectionModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

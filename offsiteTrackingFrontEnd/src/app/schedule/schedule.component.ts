@@ -18,7 +18,7 @@ export class ScheduleComponent implements OnInit {
 
   lat: number;
   lng: number;
-  locationChosen = true;
+  locationChosen = false;
 
   latlng: String = '';
 
@@ -67,8 +67,11 @@ export class ScheduleComponent implements OnInit {
     let coords = event.coords;
     this.lat = coords.lat;
     this.lng = coords.lng;
-    this.latlng = `${coords.lat},${coords.lng}`;
     this.locationChosen = true;
+
+    console.log(this.lat + " " + this.lng)
+    this.latlng = `${coords.lat},${coords.lng}`;
+
     this.fillAdress();
   }
 
@@ -87,6 +90,7 @@ export class ScheduleComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+        this.locationChosen = true
       });
     }
   }
@@ -129,7 +133,7 @@ export class ScheduleComponent implements OnInit {
         let response: any = res;
         Promise.resolve()
           .then(() => {
-            this.snackBar.open(response.message, 'Close', { duration: 10000 });
+            this.snackBar.open(response.message, 'Close', { duration: 3000 });
           });
       },
       err => {

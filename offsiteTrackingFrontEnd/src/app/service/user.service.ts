@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -8,8 +8,11 @@ import { Router } from '@angular/router';
 export class UserService {
 
   adminApi = "http://localhost:5000"
-  constructor(private http: HttpClient,private router:Router) { }
-
+   emitter = new EventEmitter<any>();
+  constructor(private http: HttpClient, private router: Router) { }
+  emitValue(value: any) {
+    this.emitter.emit(value);
+  }
 
   saveUser(user) {
     localStorage.setItem('current_user', user);
@@ -30,18 +33,18 @@ export class UserService {
     }
     return null;
   }
+
   logOut() {
-    console.log('logout succesful')
-     this.deleteUser();
-     this.router.navigateByUrl('');
+    this.deleteUser();
   }
-  getPayLoad(){
-    const token=this.getUser();
-    if(token){
-      const userPayLoad=atob(token.split('.')[1]);
+
+  getPayLoad() {
+    const token = this.getUser();
+    if (token) {
+      const userPayLoad = atob(token.split('.')[1]);
       return JSON.parse(userPayLoad);
     }
-   }
+  }
 
     getMySchedule(id:string){
        return this.http.get(`${this.adminApi}/api/admin/schedule/`+id)
@@ -52,22 +55,21 @@ export class UserService {
        return this.http.post(`${this.adminApi}/api/employee/checkin`,checkin);
     }
 
-    getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-        var R = 6371; // Radius of the earth in km
-        var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
-        var dLon = this.deg2rad(lon2-lon1); 
-        var a = 
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
-          Math.sin(dLon/2) * Math.sin(dLon/2)
-          ; 
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        var d = R * c; // Distance in km
-        return d;
-      }
-      
-      deg2rad(deg) {
-        return deg * (Math.PI/180)
-      }
-      
+  getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = this.deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  deg2rad(deg) {
+    return deg * (Math.PI / 180)
+  }
 }

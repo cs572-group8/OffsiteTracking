@@ -6,7 +6,6 @@ const ObjectId = require('mongodb').ObjectID;
 
 router.post('/schedule', (req, res) => {
     let newSchedule = req.body;
-    console.log(newSchedule.address);
     newSchedule.address.location = newSchedule.address.location.split(',')
     newSchedule.address.postalCode = parseInt(newSchedule.address.postalCode)
     newSchedule.schedule.employeeId = newSchedule.schedule.employeeId
@@ -20,14 +19,12 @@ router.post('/schedule', (req, res) => {
     }, (err, doc) => {
         if (err) throw err
         if (doc) {
-            console.log(doc)
             doc.schedule.push(req.body.schedule)
             doc.save().then(
                 doc => {
                     res.status(200).json({ success: true, message: "Schedule is registred." })
                 }).catch(
                     err => {
-                        console.log(err)
                         res.status(401).json({ success: false, message: "Schedule is registred." })
                     }
                 )
