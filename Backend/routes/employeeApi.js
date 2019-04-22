@@ -46,6 +46,23 @@ router.post('/save', (req, res) => {
     );
 });
 
+router.post('/update', (req, res) => {
+    bcrypt.hash(req.body.newPass, 10, function (err, hash) {
+        if (err) throw err;
+        User.findOneAndUpdate({email:req.body.email},{password:hash},
+            function(err,user){
+                if(err) throw err;
+               // console.log(user);
+        })  
+        .then(data => {
+            res.status(200).json({ success: true, message: "Password updated succesfuly" })
+        })
+        .catch(err => {
+            res.status(400).json({ succes: false, error: err })
+        });
+    });
+});
+
 router.get('/all', (req, res) => {
     User.find(
         { type: "employee" },

@@ -53,10 +53,11 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (result: any) => {
             this.userService.saveUser(result.token);
-            const { name, userType } = result;
+            const { name, userType, email } = result;
             this.store.dispatch(new UserActions.Login({
               name,
-              userType
+              userType,
+              email
             }))
             return this.router.navigate(['user']);
           },

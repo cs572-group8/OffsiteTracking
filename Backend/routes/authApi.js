@@ -26,6 +26,7 @@ router.post('/login', (req, res) => {
           return res.json({
             name: `${user.firstName} ${user.lastName}`,
             userType: user.type,
+            email: user.email,
             token: token
           });
         }
