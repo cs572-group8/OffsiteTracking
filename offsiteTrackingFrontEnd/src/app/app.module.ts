@@ -17,11 +17,13 @@ import { LogoutDirective } from './logout.directive';
 import { AgmCoreModule } from '@agm/core';
 import { AngularFireModule } from '@angular/fire';
 import { config } from 'src/environments/configKeys';
-import { StoreModule } from '@ngrx/store'
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers, metaReducers } from './redux/reducers';
-import { LogoutComponent } from './logout/logout.component'
+import { GeospatialComponent } from './geospatial/geospatial.component';
+import { AgmDirectionModule } from 'agm-direction';
+import { LogoutComponent } from './logout/logout.component';
+import { metaReducers, reducers } from './redux/reducers';
+import { StoreModule } from '@ngrx/store';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 
 export const fireBaseCongig = config.firebaseConfig
 
@@ -35,6 +37,8 @@ export const fireBaseCongig = config.firebaseConfig
     MyScheduleComponent,
     IsVisibleDirective,
     LogoutDirective,
+    GeospatialComponent,
+
     LogoutComponent
   ],
   imports: [
@@ -52,7 +56,8 @@ export const fireBaseCongig = config.firebaseConfig
     AgmCoreModule.forRoot({
       apiKey: config.googleMapsKey
     }),
-    AngularFireModule.initializeApp(fireBaseCongig)
+    AngularFireModule.initializeApp(fireBaseCongig),
+    AgmDirectionModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]

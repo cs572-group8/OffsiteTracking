@@ -1,0 +1,18 @@
+
+   <mat-grid-list cols="2">
+   <mat-grid-tile>
+   </mat-grid-tile>
+   <h1>GPS Location</h1>
+     <button>CheckIN</button>
+      <mat-grid-tile>
+  
+   <agm-map [latitude]="lat" [longitude]="lng">
+  <agm-direction [origin]="origin" [destination]="destination">
+      <agm-info-window>
+          <h3>Howdy</h3>
+          <p>Here I am</p>
+        </agm-info-window>
+  </agm-direction>
+</agm-map>
+</mat-grid-tile>
+</mat-grid-list>

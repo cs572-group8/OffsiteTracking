@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
-  emitter = new EventEmitter<any>();
+
+  adminApi = "http://localhost:5000"
+   emitter = new EventEmitter<any>();
   constructor(private http: HttpClient, private router: Router) { }
   emitValue(value: any) {
     this.emitter.emit(value);
@@ -44,14 +46,14 @@ export class UserService {
     }
   }
 
-  getMySchedule(id: string) {
-    return this.http.get('/api/admin/schedule/' + id)
-  }
+    getMySchedule(id:string){
+       return this.http.get(`${this.adminApi}/api/admin/schedule/`+id)
+      }
 
-  saveCheckIn(checkin) {
-    console.log(checkin);
-    return this.http.post('/api/employee/checkin', checkin);
-  }
+    saveCheckIn(checkin){
+      console.log(checkin);
+       return this.http.post(`${this.adminApi}/api/employee/checkin`,checkin);
+    }
 
   getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
