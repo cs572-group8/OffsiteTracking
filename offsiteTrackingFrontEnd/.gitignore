@@ -45,4 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-enviroment/configKeys.ts
+src/environments/configKeys.ts
