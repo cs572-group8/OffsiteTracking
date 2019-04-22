@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
 
-    console.log('login successful');
+    
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (data: any) => {
             this.userService.saveUser(data);
+            console.log('login successful');
             return this.router.navigate(['user']);
           },
           error => { this.serviceErrors = error.error }

@@ -23,6 +23,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "agm-direction": "^0.7.6",
     "core-js": "^2.5.4",
     "firebase": "^5.10.0",
     "geofire": "^5.0.1",

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-
+  adminApi = "http://localhost:5000"
   constructor(private http: HttpClient,private router:Router) { }
 
 
@@ -44,12 +44,12 @@ export class UserService {
    }
 
     getMySchedule(id:string){
-       return this.http.get('/api/admin/schedule/'+id)
+       return this.http.get(`${this.adminApi}/api/admin/schedule/`+id)
       }
 
     saveCheckIn(checkin){
       console.log(checkin);
-       return this.http.post('/api/employee/checkin',checkin);
+       return this.http.post(`${this.adminApi}/api/employee/checkin`,checkin);
     }
 
     getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {

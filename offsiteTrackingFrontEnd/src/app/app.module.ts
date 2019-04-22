@@ -17,6 +17,9 @@ import { LogoutDirective } from './logout.directive';
 import { AgmCoreModule } from '@agm/core';
 import { AngularFireModule } from '@angular/fire';
 import { config } from 'src/environments/configKeys';
+import { GeospatialComponent } from './geospatial/geospatial.component';
+import { AgmDirectionModule } from 'agm-direction';
+
 export const fireBaseCongig = config.firebaseConfig
 
 
@@ -29,6 +32,7 @@ export const fireBaseCongig = config.firebaseConfig
     MyScheduleComponent,
     IsVisibleDirective,
     LogoutDirective,
+    GeospatialComponent,
 
   ],
   imports: [
@@ -42,7 +46,8 @@ export const fireBaseCongig = config.firebaseConfig
     AgmCoreModule.forRoot({
       apiKey: config.googleMapsKey
     }),
-    AngularFireModule.initializeApp(fireBaseCongig)
+    AngularFireModule.initializeApp(fireBaseCongig),
+    AgmDirectionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
