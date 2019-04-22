@@ -83,20 +83,26 @@ export class EmployeeComponent implements OnInit {
   }
 
   onChoseLocation(event) {
-    console.log(event)
     let coords = event.coords;
-    this.latlng = `${coords.lat},${coords.lng}`;
+    this.lat = coords.lat;
+    this.lng = coords.lng;
     this.locationChosen = true;
+    this.latlng = `${coords.lat},${coords.lng}`;
     this.fillAdress();
   }
 
   fillAdress() {
     this.geoservice.getLocationInformation(this.latlng)
     this.dataservice.emitter.subscribe(res => {
-      this.address.street = res.street
-      this.address.city = res.city
-      this.address.state = res.state
-      this.address.postalCode = res.postalCode
+      this.employeeForm.get('address').setValue(res.street.trim())
+      this.employeeForm.get('city').setValue(res.city.trim())
+      this.employeeForm.get('state').setValue(res.state.trim())
+      this.employeeForm.get('postalCode').setValue(res.postalCode.trim())
+
+      this.employeeForm.get('street').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.employeeForm.get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.employeeForm.get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.employeeForm.get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
     })
   }
 }

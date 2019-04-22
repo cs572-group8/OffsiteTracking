@@ -6,6 +6,7 @@ import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { GeospatialComponent } from './geospatial/geospatial.component';
 import { LogoutComponent } from './logout/logout.component';
+import { PasswordComponent } from './password/password.component';
 
 const routes: Routes = [
   { path: 'user', component: EmployeeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'mySchedule', component: MyScheduleComponent },
   { path: 'Schedule', component: ScheduleComponent },
   { path: 'mySchedule/geospatial', component: GeospatialComponent },
+  { path: 'password', component: PasswordComponent},
   { path: '', component: LoginComponent }
 ];
 @NgModule({
