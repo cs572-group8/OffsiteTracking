@@ -47,7 +47,7 @@ export class EmployeeComponent implements OnInit {
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
-      type: ['Employee'],
+      type: ['employee'],
       postalCode: ['', [Validators.required]]
     });
   }

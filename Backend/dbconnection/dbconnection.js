@@ -5,6 +5,7 @@ const dbname = cfg.dbname;
 const username = cfg.username;
 const password = cfg.password;
 
+//const uri = `mongodb+srv://${username}:${password}@mwacluster-mdjim.mongodb.net/${dbname}?retryWrites=true`;
 const uri = `mongodb+srv://${username}:${password}@cluster0-fs3o9.mongodb.net/${dbname}?retryWrites=true`;
 
 function dbConnection() {

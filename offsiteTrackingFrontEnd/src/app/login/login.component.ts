@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
 
   }
   onSubmit() {
-    console.log("login");
+
+
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -63,5 +64,4 @@ export class LoginComponent implements OnInit {
         );
     }
   }
-
 }

@@ -1,20 +1,32 @@
-        <mat-error >{{Confirmation.checkInTime}}</mat-error>
-<ol>
-  <li *ngFor="let schedule of mySchedule">
-    <p>{{schedule.placeName}}</p>
-    <p>{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</p>
-    <ol>
-      <li *ngFor="let emp of schedule.schedule">
-        <a [routerLink]="[emp.employeeId._id]">{{emp.employeeId.fistName}}{{emp.employeeId.lastName}} </a>
-        <p>{{emp.date}} </p>
 
-        <p>{{emp.description}}</p>
-        <button
-          (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button>
-      </li>
-
-    </ol>
-    
-  </li>
  
-</ol>
+ <ol>
+      
+    <li *ngFor="let schedule of mySchedule">
+        <mat-card>
+            <mat-card-title>Destination Name:{{schedule.placeName}}</mat-card-title>
+            <mat-card-content>
+                <strong>Destination Adress: </strong> <a  [routerLink]="['geospatial']"[queryParams]="{location:schedule.address.location}" >{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</a>
+      <ol>
+        <li *ngFor="let emp of schedule.schedule">
+          <br>
+          <strong>Name</strong><p>{{emp.employeeId.fistName}}{{emp.employeeId.lastName}}</p>
+          <strong>Starting Job:</strong><p>{{emp.date}} </p>
+
+          <strong>Description:</strong><p>{{emp.description}}</p>
+          <mat-card-actions>
+          <!-- <button
+            (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button> -->
+          </mat-card-actions>
+            <mat-error >{{Confirmation.checkInTime}}{{Confirmation.status}}</mat-error>
+        </li>
+      </ol>
+      </mat-card-content>
+      
+    </mat-card>
+    
+     </li>
+    
+  </ol>
+
+  
