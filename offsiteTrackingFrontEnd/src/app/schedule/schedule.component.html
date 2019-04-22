@@ -9,26 +9,24 @@
 
         <div formGroupName="address">
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Address" formControlName="street"
-              [value]="address.street">1600 Amphitheatre Pkwy</textarea>
+            <textarea matInput placeholder="Address" formControlName="street"></textarea>
           </mat-form-field>
 
           <table class="example-full-width" cellspacing="0">
             <tr>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="City" formControlName="city" [value]="address.city">
+                  <input matInput placeholder="City" formControlName="city">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="State" formControlName="state" [value]="address.state">
+                  <input matInput placeholder="State" formControlName="state">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput #postalCode maxlength="5" placeholder="Postal Code" [value]="address.postalCode"
-                    formControlName="postalCode">
+                  <input matInput #postalCode maxlength="5" placeholder="Postal Code" formControlName="postalCode">
                   <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
                 </mat-form-field>
               </td>
@@ -36,8 +34,7 @@
           </table>
 
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="[longitude,latitude]" id="location" [value]="latlng"
-              formControlName="location">
+            <input matInput placeholder="[longitude,latitude]" id="location" formControlName="location">
           </mat-form-field>
         </div>
 

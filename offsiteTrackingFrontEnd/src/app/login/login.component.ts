@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
               name,
               userType
             }))
-
             return this.router.navigate(['user']);
           },
           error => { this.serviceErrors = error.error }

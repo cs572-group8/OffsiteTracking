@@ -68,20 +68,24 @@ export class ScheduleComponent implements OnInit {
     this.lat = coords.lat;
     this.lng = coords.lng;
     this.locationChosen = true;
-
-    console.log(this.lat + " " + this.lng)
     this.latlng = `${coords.lat},${coords.lng}`;
-
+    this.scheduleForm.get("address").get('location').setValue(this.latlng)
     this.fillAdress();
   }
 
   fillAdress() {
     this.geoservice.getLocationInformation(this.latlng)
     this.dataservice.emitter.subscribe(res => {
-      this.address.street = res.street.trim()
-      this.address.city = res.city.trim()
-      this.address.state = res.state.trim()
-      this.address.postalCode = res.postalCode.trim()
+      this.scheduleForm.get("address").get('street').setValue(res.street.trim())
+      this.scheduleForm.get("address").get('city').setValue(res.city.trim())
+      this.scheduleForm.get("address").get('state').setValue(res.state.trim())
+      this.scheduleForm.get("address").get('postalCode').setValue(res.postalCode.trim())
+
+      this.scheduleForm.get("address").get('location').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.scheduleForm.get("address").get('street').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.scheduleForm.get("address").get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.scheduleForm.get("address").get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.scheduleForm.get("address").get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
     })
   }
 

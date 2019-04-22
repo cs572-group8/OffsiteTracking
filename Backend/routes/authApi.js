@@ -23,7 +23,6 @@ router.post('/login', (req, res) => {
             type: user.type
           }, cfg.key, { expiresIn: 60 * 60 }
           );
-          console.log(token)
           return res.json({
             name: `${user.firstName} ${user.lastName}`,
             userType: user.type,

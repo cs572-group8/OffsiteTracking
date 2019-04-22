@@ -4,7 +4,6 @@ const User = require('../models/UserModel');
 const ObjectId = require('mongodb').ObjectID;
 
 router.post('/checkin', (req, res) => {
-    console.log("req", req.body);
     checkin = {
         placeName: req.body.placeName,
         checkInDate: req.body.checkInDate,
@@ -49,7 +48,7 @@ router.post('/save', (req, res) => {
 
 router.get('/all', (req, res) => {
     User.find(
-        {},
+        { type: "employee" },
         { _id: 1, firstName: 1, lastName: 1 },
         function (err, doc) {
             if (err) throw err
