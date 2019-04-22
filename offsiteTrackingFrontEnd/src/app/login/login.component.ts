@@ -4,7 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ClientService } from '../service/client-service.service';
-
+import { Store } from '@ngrx/store';
+import { State } from '../redux/reducers'
+import * as UserActions from '../redux/actions/user.action'
 
 @Component({
   selector: 'app-login',
@@ -17,8 +19,14 @@ export class LoginComponent implements OnInit {
   submitted = false;
   data;
   user;
-  constructor(private formBuilder: FormBuilder, private router: Router, private userService: UserService, private clientService: ClientService) {
-  }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private clientService: ClientService,
+    private store: Store<State>,
+    private router: Router
+  ) { }
   invalidPassword() {
     return (this.submitted && this.loginForm.controls.password.errors != null);
   }
@@ -35,24 +43,25 @@ export class LoginComponent implements OnInit {
 
   }
   onSubmit() {
-
-    console.log('login successful');
+    console.log("login");
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
-    }
-    else {
-
+    } else {
       this.clientService.login(this.loginForm.value)
         .subscribe(
-          (data: any) => {
-            this.userService.saveUser(data);
+          (result: any) => {
+            this.userService.saveUser(result.token);
+            const { name, userType } = result;
+            this.store.dispatch(new UserActions.Login({
+              name,
+              userType
+            }))
+
             return this.router.navigate(['user']);
           },
           error => { this.serviceErrors = error.error }
-
         );
-
     }
   }
 

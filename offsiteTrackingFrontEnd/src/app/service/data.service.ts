@@ -4,11 +4,10 @@ import { Injectable, EventEmitter } from '@angular/core';
   providedIn: 'root'
 })
 export class DataService {
-
+  emitter = new EventEmitter<string>();
   constructor() {
   }
 
-  emitter = new EventEmitter<string>();
   emitValue(value: any) {
     this.emitter.emit(value);
   }

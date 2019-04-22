@@ -1,17 +1,18 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-  <span>OffsiteTracking</span>
-      <span class="example-fill-remaining-space"></span>
-      <span class="align-center"></span>
-      <span class="example-spacer"></span>
-      <button mat-button>About</button>
-      <button mat-button>Contact</button>
-      <button mat-button (click)='showEmployee()'>Employee Information</button>
-      <button mat-button (click)='showSchedule()'>Schedule</button>
-      <button mat-button appIsVisible (click)='showMySchedule()'>My Schedule</button>
-      <button mat-button class="logout" appLogout (click)='onLogout()'>Logout</button>    
-     
- 
+    <span>OffsiteTracking</span>
+    <span class="example-fill-remaining-space"></span>
+    <span class="align-center"></span>
+    <span class="example-spacer"></span>
+    <button mat-button>About</button>
+    <button mat-button>Contact</button>
+    <div *ngIf="user$ | async as user">
+      <a mat-button [routerLink]="['user']" *ngIf="user.userType === 'admin'">Employee Information</a>
+      <a mat-button [routerLink]="['Schedule']" *ngIf="user.userType === 'admin'">Schedule</a>
+      <a mat-button [routerLink]="['mySchedule']" *ngIf="user.userType === 'employee'">My
+        Schedule</a>
+      <a mat-button class="logout" [routerLink]="['logout']" *ngIf="user.userType !== ''">Logout</a>
+    </div>
   </mat-toolbar-row>
-   </mat-toolbar>
+</mat-toolbar>
 <router-outlet></router-outlet>
