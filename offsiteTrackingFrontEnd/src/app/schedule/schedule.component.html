@@ -4,7 +4,7 @@
       <div class="example-container">
         <h2>Create a Schedule </h2>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Place Name" value="Place Name" formControlName="placeName">
+          <input matInput placeholder="Place Name" value="" formControlName="placeName">
         </mat-form-field>
 
         <div formGroupName="address">
@@ -40,7 +40,7 @@
 
         <div formGroupName="schedule">
           <mat-form-field class="example-full-width">
-            <mat-select placeholder="Employee Id" formControlName="employeeId">
+            <mat-select placeholder="Employee" formControlName="employeeId">
               <mat-option *ngFor="let employee of employees" value="{{employee._id}}">
                 {{employee.fistName}} {{employee.lastName}}</mat-option>
             </mat-select>

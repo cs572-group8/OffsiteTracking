@@ -23,7 +23,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { metaReducers, reducers } from './redux/reducers';
 import { StoreModule } from '@ngrx/store';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 
 export const fireBaseCongig = config.firebaseConfig
 
@@ -38,7 +38,6 @@ export const fireBaseCongig = config.firebaseConfig
     IsVisibleDirective,
     LogoutDirective,
     GeospatialComponent,
-
     LogoutComponent
   ],
   imports: [
