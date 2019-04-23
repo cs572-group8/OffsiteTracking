@@ -6,6 +6,7 @@ import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { GeospatialComponent } from './geospatial/geospatial.component';
 import { LogoutComponent } from './logout/logout.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'user', component: EmployeeComponent },
