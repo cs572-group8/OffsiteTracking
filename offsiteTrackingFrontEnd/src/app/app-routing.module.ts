@@ -6,14 +6,8 @@ import { MyScheduleComponent } from './my-schedule/my-schedule.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { GeospatialComponent } from './geospatial/geospatial.component';
 import { LogoutComponent } from './logout/logout.component';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 import { AuthGuard } from './guards/auth.guard';
->>>>>>> 89c7e08046c0355ba80daeac5c565f0310eebc0c
 import { PasswordComponent } from './password/password.component';
->>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
 
 const routes: Routes = [
   { path: 'user', component: EmployeeComponent },
