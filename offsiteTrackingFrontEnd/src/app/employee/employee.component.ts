@@ -99,7 +99,7 @@ export class EmployeeComponent implements OnInit {
       this.employeeForm.get('state').setValue(res.state.trim())
       this.employeeForm.get('postalCode').setValue(res.postalCode.trim())
 
-      this.employeeForm.get('street').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      this.employeeForm.get('address').updateValueAndValidity({ onlySelf: true, emitEvent: true })
       this.employeeForm.get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
       this.employeeForm.get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
       this.employeeForm.get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
