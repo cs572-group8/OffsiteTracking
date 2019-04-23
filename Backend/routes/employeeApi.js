@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/UserModel');
 const ObjectId = require('mongodb').ObjectID;
 const Place=require('../models/PlaceModel')
+
 router.post('/checkin', (req, res) => {
     checkin = {
         placeName: req.body.placeName,

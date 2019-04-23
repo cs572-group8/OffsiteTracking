@@ -8,16 +8,18 @@ import { GeospatialComponent } from './geospatial/geospatial.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PasswordComponent } from './password/password.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: 'user', component: EmployeeComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
-  { path: 'mySchedule', component: MyScheduleComponent },
-  { path: 'Schedule', component: ScheduleComponent },
-  { path: 'mySchedule/geospatial', component: GeospatialComponent },
-  { path: 'password', component: PasswordComponent },
-  { path: '', component: LoginComponent }
+  { path: 'user', component: EmployeeComponent, canActivate: [AuthGuard] },
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
+  { path: 'password', component: PasswordComponent, canActivate: [AuthGuard] },
+  { path: 'Schedule', component: ScheduleComponent, canActivate: [AuthGuard] },
+  { path: 'mySchedule', component: MyScheduleComponent, canActivate: [AuthGuard] },
+  { path: 'mySchedule/geospatial', component: GeospatialComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/' }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -7,13 +7,15 @@
     <button mat-button>About</button>
     <button mat-button>Contact</button>
     <div *ngIf="user$ | async as user">
+      <a mat-button [routerLink]="['']" *ngIf="user.userType === 'admin'">Home</a>
       <a mat-button [routerLink]="['user']" *ngIf="user.userType === 'admin'">Employee Information</a>
       <a mat-button [routerLink]="['Schedule']" *ngIf="user.userType === 'admin'">Schedule</a>
       <a mat-button [routerLink]="['mySchedule']" *ngIf="user.userType === 'employee'">My
         Schedule</a>
-        <a mat-button class="password" [routerLink]="['password']" *ngIf="user.userType !== ''">Change Password</a>
+      <a mat-button class="password" [routerLink]="['password']" *ngIf="user.userType !== ''">Change Password</a>
       <a mat-button class="logout" [routerLink]="['logout']" *ngIf="user.userType !== ''">Logout</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
+<mat-progress-bar mode="indeterminate" *ngIf="0"></mat-progress-bar>
 <router-outlet></router-outlet>

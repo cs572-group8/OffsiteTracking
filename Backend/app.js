@@ -5,6 +5,7 @@ const auth = require("./authorization/auth");
 const authApi = require('./routes/authApi')
 const userApi = require('./routes/employeeApi')
 const adminApi = require('./routes/adminApi')
+const googleApi = require('./routes/googleApi')
 
 const port = 5000;
 const app = express();
@@ -13,9 +14,10 @@ app.use(express.json());
 
 app.use(db());
 
-//app.use('*/api', auth);
+app.use('*/api', auth);
 app.use("/auth", authApi);
 app.use("/api/employee", userApi);
 app.use("/api/admin", adminApi);
+app.use("/api/google", googleApi);
 
 app.listen(port, () => console.log(`listening port ${port}`));

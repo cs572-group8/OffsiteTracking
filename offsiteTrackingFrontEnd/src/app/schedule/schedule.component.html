@@ -40,13 +40,13 @@
 
         <div formGroupName="schedule">
           <mat-form-field class="example-full-width">
-            <mat-select placeholder="Employee" formControlName="employeeId">
+            <mat-select placeholder="Select Employee" formControlName="employeeId">
               <mat-option *ngFor="let employee of employees" value="{{employee._id}}">
                 {{employee.fistName}} {{employee.lastName}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
-            <input matInput type="datetime-local" placeholder="start date" formControlName="date">
+          <mat-form-field class="example-full-width">
+            <input matInput type="datetime-local" placeholder="Schedule Time and Date" formControlName="date">
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <textarea matInput placeholder="Description" formControlName="description"></textarea>
