@@ -7,20 +7,11 @@ import { UserService } from './user.service';
 })
 export class ClientService {
   adminApi = "http://localhost:5000"
-  constructor(public http: HttpClient, private userservice: UserService) { }
+  constructor(public http: HttpClient) {
+  }
 
   login(data) {
     return this.http.post(`${this.adminApi}/auth/login`, data)
-    // .subscribe(
-    //   res => {
-    //     this.userservice.saveUser(res)
-    //     this.userservice.emitValue("logged");
-    //     return this.router.navigate(['user']);
-    //   },
-    //   err => {
-    //     this.userservice.emitValue(err);
-    //   }
-    // )
   }
 
   saveEmployee(data) {
@@ -32,6 +23,10 @@ export class ClientService {
   }
   getEmployees() {
     return this.http.get(`${this.adminApi}/api/employee/all`)
+  }
+
+  getSchedules() {
+    return this.http.get(`${this.adminApi}/api/admin/schedules`)
   }
 
   saveSchedule(data) {

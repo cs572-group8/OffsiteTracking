@@ -25,6 +25,7 @@ import { StoreModule } from '@ngrx/store';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { PasswordComponent } from './password/password.component';
+import { HomeComponent } from './home/home.component';
 
 export const fireBaseCongig = config.firebaseConfig
 
@@ -40,7 +41,8 @@ export const fireBaseCongig = config.firebaseConfig
     LogoutDirective,
     GeospatialComponent,
     PasswordComponent,
-    LogoutComponent
+    LogoutComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

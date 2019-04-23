@@ -8,25 +8,16 @@ import { DataService } from './data.service';
   providedIn: 'root'
 })
 export class GeoService {
-  googleapi: String = "https://maps.googleapis.com/maps/api/geocode/json?";
+
+  googleapi: string = "http://localhost:5000/api/google";
+
   constructor(private dataService: DataService, public http: HttpClient) {
   }
 
   getLocationInformation(latlng) {
-    return this.http.get(`${this.googleapi}latlng=${latlng}&key=${config.googleMapsKey}`).subscribe(
+    return this.http.get(`${this.googleapi}/geocode/${latlng}`).subscribe(
       res => {
-        let locationInfo: any = res
-        let info: any = {}
-        const formatted_address = locationInfo.results[0].formatted_address.split(',')
-        info.street = formatted_address[0]
-        info.city = formatted_address[1]
-        let statePostal = formatted_address[2].trim().split(" ")
-        if (statePostal.length = 2) {
-          info.state = statePostal[0]
-          info.postalCode = statePostal[1]
-        }
-        info.country = formatted_address[3]
-        this.dataService.emitValue(info);
+        this.dataService.emitValue(res);
       },
       err => {
         console.log(err)
@@ -35,26 +26,40 @@ export class GeoService {
   }
   googleapiDistance: String = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&";
  
-  getDistanceInformation(latlng,latlog,latlngdis,latlogdis)
-  {
+  // getDistanceInformation(latlng,latlog,latlngdis,latlogdis)
+  // {
     
    
-    console.log('inside');
+  //   console.log('inside');
     
-             return this.http.get(`${this.googleapiDistance}origins=${latlng},${latlog}&destinations=${latlngdis},${latlogdis}&key=${config.googleMapsKey}`).subscribe(
-               res=>{
-                let locationInfo: any =res;
-                let information: any = {}
-                    information.destination_address=locationInfo.destination_addresses[0]
-                    information.origin=locationInfo.origin_addresses[0]
-                    information.distance=locationInfo.rows[0].elements[0].distance.text
-                    information.duration=locationInfo.rows[0].elements[0].duration.text
-                    this.dataService.emitValue(information);
+  //            return this.http.get(`${this.googleapiDistance}origins=${latlng},${latlog}&destinations=${latlngdis},${latlogdis}&key=${config.googleMapsKey}`).subscribe(
+  //              res=>{
+  //               let locationInfo: any =res;
+  //               let information: any = {}
+  //                   information.destination_address=locationInfo.destination_addresses[0]
+  //                   information.origin=locationInfo.origin_addresses[0]
+  //                   information.distance=locationInfo.rows[0].elements[0].distance.text
+  //                   information.duration=locationInfo.rows[0].elements[0].duration.text
+  //                   this.dataService.emitValue(information);
                      
-               },
-                err=>{
-                   console.log(err)
-                }
-             )
+  //              },
+  //               err=>{
+  //                  console.log(err)
+  //               }
+  //            )
+
+  getDistanceInformation(latlng, latlog, latlngdis, latlogdis) {
+    return this.http.get(`${this.googleapi}/distance/${latlng},${latlog}/${latlngdis},${latlogdis}`).subscribe(
+      res => {
+        let locationInfo: any
+        let information: any = {}
+      //  info = locationInfo.rows[0].elements[0]
+        information.destination_address=locationInfo.destination_addresses[0]
+        information.origin=locationInfo.origin_addresses[0]
+        information.distance=locationInfo.rows[0].elements[0].distance.text
+        information.duration=locationInfo.rows[0].elements[0].duration.text
+        this.dataService.emitValue(information);
+      }
+    )
   }
 }

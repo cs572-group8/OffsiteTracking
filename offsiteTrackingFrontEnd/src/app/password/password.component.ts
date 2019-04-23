@@ -20,7 +20,7 @@ export class PasswordComponent implements OnInit {
   errorMessage:string;
 
   user$: Observable<IUser>;
-  user = {name: "", email: ""}
+  user = {name: "", email: "",type:""}
   constructor(
     private formBuilder:FormBuilder, 
     public userService: UserService,
@@ -42,6 +42,7 @@ export class PasswordComponent implements OnInit {
     this.user$.subscribe(result => {
       this.user.email = result.email;
       this.user.name = result.name;
+      this.user.type = result.userType;
     }); 
     this.passwordForm.get('firstName').setValue(this.user.name);
     this.passwordForm.get('email').setValue(this.user.email);
@@ -61,9 +62,11 @@ export class PasswordComponent implements OnInit {
         this.service.updateEmployee(this.passwordForm.value)
           .subscribe(
             (data: any) => {
-              //this.service.updateEmployee(data);
-              console.log('Employee password updated successfully');
-              return this.router.navigate(['user']);
+              console.log('Employee password updated successfully');              
+              if (this.user.type == 'admin')
+              return this.router.navigate(['Schedule']);
+              else
+              return this.router.navigate(['mySchedule']);
             },
             error => { this.errorMessage = error.error.message }
           );

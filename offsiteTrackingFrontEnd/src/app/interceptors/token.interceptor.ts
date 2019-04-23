@@ -2,7 +2,6 @@ import { Injectable, Injector } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -12,9 +11,8 @@ export class TokenInterceptor implements HttpInterceptor {
                 headers: req.headers.set('Authorization', localStorage.getItem('current_user'))
             })
         else
-            authReq = req.clone({
-                headers:req.headers.set('Access-Control-Allow-Origin','*')
-            })
+            authReq = req.clone({})
+
         return next.handle(authReq);
     }
 }
