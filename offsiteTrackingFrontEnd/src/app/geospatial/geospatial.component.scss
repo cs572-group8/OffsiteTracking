@@ -3,3 +3,21 @@ agm-map {
     height: 97%;
     width: 97%;
   }
+  ul{
+    list-style-type: none;
+    
+  }
+  #wrapper {
+    display: flex;
+    height: 100%;
+  }
+  
+  #left {
+    flex: 0 0 35%;
+  }
+  
+  #right {
+    flex: 1;
+  }
+  
+ 

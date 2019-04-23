@@ -23,7 +23,10 @@ var placeSchema = new mongoose.Schema({
                 default: Date.now()
             },
             description: { type: String, required: true },
-            status: { type: Boolean }
+            status: {
+                type: Boolean,
+                default: false
+            }
         }
     ]
 

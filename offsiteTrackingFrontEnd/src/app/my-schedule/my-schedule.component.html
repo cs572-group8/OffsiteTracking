@@ -1,9 +1,9 @@
 
- 
- <ol>
+    
+    <ol>
       
-    <li *ngFor="let schedule of mySchedule">
-        <mat-card>
+    <li *ngFor="let schedule of mySchedule;let idx = index">
+            <mat-card>
             <mat-card-title>Destination Name:{{schedule.placeName}}</mat-card-title>
             <mat-card-content>
                 <strong>Destination Adress: </strong> <a  [routerLink]="['geospatial']"[queryParams]="{location:schedule.address.location}" >{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</a>
@@ -15,9 +15,9 @@
 
           <strong>Description:</strong><p>{{emp.description}}</p>
           <mat-card-actions>
-          <!-- <button
-            (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button> -->
-            <button (click)="CheckIn(emp.employeeId._id,schedule.address.location,schedule.placeName,emp.date)">My Destination</button> 
+           <button (click)="Destination(emp.employeeId._id,schedule.address.location,schedule.placeName,emp.date,emp._id)" class="btn waves-effect waves-light">My Destination
+                <i class="material-icons right">send</i>
+              </button>
           </mat-card-actions>
           
         </li>
@@ -25,9 +25,9 @@
       </mat-card-content>
       
     </mat-card>
-    
+  
      </li>
+     
     
   </ol>
 
-  

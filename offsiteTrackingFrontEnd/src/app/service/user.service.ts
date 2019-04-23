@@ -47,6 +47,7 @@ export class UserService {
   }
 
     getMySchedule(id:string){
+      console.log("myid",id)
        return this.http.get(`${this.adminApi}/api/employee/schedule/`+id)
       }
 

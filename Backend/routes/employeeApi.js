@@ -5,20 +5,30 @@ const ObjectId = require('mongodb').ObjectID;
 const Place=require('../models/PlaceModel')
 
 router.post('/checkin', (req, res) => {
+    console.log("req", req.body);
     checkin = {
+        
         placeName: req.body.placeName,
         checkInDate: req.body.checkInDate,
         checkInTime: req.body.checkInTime,
         status: req.body.status
     }
     User.findOne({ _id: new ObjectId(req.body.id) }).then(user => {
+        console.log("updated",req.body.scheduleid)
         user.checkin.push(checkin)
-        user.save().then(user => { res.json(checkin) })
-    })
+        user.save().then(
+            Place.update(
+                { "schedule._id": req.body.scheduleid },
+                { $set: { 'schedule.$.status': true } }
+            ).then(d=>{
+                console.log(d);
+                res.json({success:true})
+            }))
+        })  
+    });        
+    
 
-})
-
-module.exports = router;
+//module.exports = router;
 var bcrypt = require('bcryptjs');
 
 const defaultPass = "employee";
@@ -47,26 +57,9 @@ router.post('/save', (req, res) => {
     );
 });
 
-router.post('/update', (req, res) => {
-    bcrypt.hash(req.body.newPass, 10, function (err, hash) {
-        if (err) throw err;
-        User.findOneAndUpdate({email:req.body.email},{password:hash},
-            function(err,user){
-                if(err) throw err;
-               // console.log(user);
-        })  
-        .then(data => {
-            res.status(200).json({ success: true, message: "Password updated succesfuly" })
-        })
-        .catch(err => {
-            res.status(400).json({ succes: false, error: err })
-        });
-    });
-});
-
 router.get('/all', (req, res) => {
     User.find(
-        { type: "employee" },
+        {},
         { _id: 1, firstName: 1, lastName: 1 },
         function (err, doc) {
             if (err) throw err
@@ -74,12 +67,12 @@ router.get('/all', (req, res) => {
         })
 })
 router.get('/schedule/:id', (req, res) => {
-    userid = new ObjectId(req.params.id);
+     userid = new ObjectId(req.params.id);
     console.log(userid);
-    Place.find({ 'schedule.employeeId': new ObjectId(req.params.id) }
+    Place.find({ schedule: { $elemMatch: {status:'false',employeeId:userid } } }
         , { schedule: 1, address: 1, location: 1, placeName: 1 }).populate('schedule.employeeId')
         .then(doc => res.json(doc)).catch(err=>res.json(err));
 
 });
- 
+
 module.exports = router

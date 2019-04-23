@@ -2,11 +2,14 @@ import { GeoService } from './../service/geo.service';
 
 import { UserService } from './../service/user.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../redux/reducers';
 import { Observable } from 'rxjs';
 import { ISchedule } from '../models/schedule.model'
+import { DataService } from '../service/data.service';
+import { discardPeriodicTasks } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'geospatial',
@@ -23,41 +26,33 @@ export class GeospatialComponent implements OnInit {
   langdistination
   place;
   checkindate;
+  scheduleid;
 
-  Confirmation: any = {
-    id: "",
-    placeName: "",
-    checkInDate: "",
-    checkInTime: "",
-    status: "",
-    location:[]
-  }
+  aftercheck:boolean;
+  errorValidation:boolean;
+
+  Information:any={}
   
 
   public origin: any;
   public destination: any;
-  constructor(private route: ActivatedRoute, 
+  constructor(private router: Router, 
               private userService: UserService, 
               private store: Store<State>,
-              private geoService:GeoService) {
+              private geoService:GeoService,
+              private dataService:DataService,
+              private snackBar: MatSnackBar) {
     this.schedule$ = this.store.pipe(select('schedule'));
     this.getUserLocation();
   }
 
   ngOnInit() {
-    // this.schedule$.subscribe(x=>{
-    //   this.langdistination=x.location[0],
-    //   this.latdistination=x.location[1],
-    //   this.id=x.empId,
-    //   this.checkindate=x.checkindate
-    //   this.place=x.placeName
-    //   })
-    this.schedule$.subscribe(x => this.latdistination = x.location[0])
+     this.schedule$.subscribe(x => this.latdistination = x.location[0])
     this.schedule$.subscribe(x => this.langdistination = x.location[1])
     this.schedule$.subscribe(x => this.id=x.empId)
     this.schedule$.subscribe(x => this.checkindate=x.checkindate);
-    this.schedule$.subscribe(x => this.place=x.checkindate);
-    
+    this.schedule$.subscribe(x => this.place=x.placeName);
+    this.schedule$.subscribe(x=>this.scheduleid=x.scheduleId);
   }
 
   private getUserLocation() {
@@ -71,38 +66,50 @@ export class GeospatialComponent implements OnInit {
     }
   }
   getDirection() {
-
     this.origin =     { lat: parseFloat(this.lat), lng: parseFloat(this.lng) };
     this.destination = { lat: parseFloat(this.latdistination), lng: parseFloat(this.langdistination) }
-
   }
+
   CheckIn() {
-  
    
     navigator.geolocation.getCurrentPosition(position => {
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
 
-      const distance = this.userService.getDistanceFromLatLonInKm(this.lat, this.lng, this.latdistination, this.langdistination);
-         this.geoService.getDistanceInformation(this.lat,this.lng,this.latdistination,this.langdistination);
-      // console.log("distance",distance)
-      // if (distance < 10) {
-      //   const today = new Date();
-      //   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      //   const checkin = {
-      //     id: this.id,
-      //     placeName: this.place,
-      //     checkInDate: today,
-      //     checkInTime: time,
-      //     status: this.getStatus(this.checkindate, today)
-      //   }
-      //   this.userService.saveCheckIn(checkin).subscribe((user) =>
-      //       this.Confirmation=user
-      //   )
-      // } else {
-      //   this.Confirmation.status = "Please go to Right place to check in"
-      // }
-
+      //const distance = this.userService.getDistanceFromLatLonInKm(this.lat, this.lng, this.latdistination, this.langdistination);
+         const x=this.geoService.getDistanceInformation(this.lat,this.lng,this.latdistination,this.langdistination)
+       this.dataService.emitter.subscribe(res=>{   
+             this.Information.distination=res.destination_address,
+             this.Information.origin=res.origin,
+             this.Information.distance=res.distance,
+              this.Information.duration=res.duration
+               this.errorValidation=true;
+              
+       if (parseFloat(this.Information.distance)*1000<1000) {
+         
+        const today = new Date();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const checkin = {
+          id: this.id,
+          placeName: this.place,
+          checkInDate: today,
+          checkInTime: time,
+          scheduleid:this.scheduleid,
+          status: this.getStatus(this.checkindate, today)
+        }
+        console.log("geospatial",checkin);
+        this.userService.saveCheckIn(checkin).subscribe((user) =>
+           { 
+            this.snackBar.open("Confirm", 'Close', { duration: 3000 }); 
+            this.aftercheck=true;
+             
+            }
+        )
+      } else {
+        this.Information.warning = "Please go to Right place to check in";
+      
+      }
+    })
    });
   }
   getStatus(timeToCheckn, checkInTIme) {
@@ -115,9 +122,12 @@ export class GeospatialComponent implements OnInit {
     if (diff > 30 && diff < 60) {
       return "late";
     } else if (diff > 60) {
-      return "The Assignment is Cancelled"
+      return "Cancelled"
     } else {
       return "ontime"
     }
+  }
+  sendToMySchedule(){
+    this.router.navigate(['mySchedule']);
   }
 }

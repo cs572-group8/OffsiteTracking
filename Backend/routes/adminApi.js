@@ -41,14 +41,7 @@ router.post('/schedule', (req, res) => {
     });
 });
 
-router.get('/schedule/:id', (req, res) => {
-    userid = new ObjectId(req.params.id);
-    console.log(userid);
-    Place.find({ 'schedule.employeeId': new ObjectId(req.params.id) }
-        , { schedule: 1, address: 1, location: 1, placeName: 1 }).populate('schedule.employeeId')
-        .then(doc => res.json(doc));
 
-});
 
 router.get('/schedules', (req, res) => {
     Place.aggregate([
