@@ -12,7 +12,7 @@ router.all('*/', (req, res, next) => {
         if (decoded.type !== 'admin' && req._parsedUrl.href.indexOf(decoded.type) === -1) {
             return res.status(401).json({
                 succes: false,
-                message: "You don't have a premission to acces."
+                message: "You don't have a premission to access."
             })
         }
 

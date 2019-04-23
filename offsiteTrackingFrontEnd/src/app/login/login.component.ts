@@ -44,8 +44,12 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
 
+<<<<<<< HEAD
     
     console.log("login");
+=======
+
+>>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -54,17 +58,20 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (result: any) => {
             this.userService.saveUser(result.token);
-            const { name, userType } = result;
+            const { name, userType, email } = result;
             this.store.dispatch(new UserActions.Login({
               name,
-              userType
+              userType,
+              email
             }))
+<<<<<<< HEAD
 
+=======
+>>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
             return this.router.navigate(['user']);
           },
           error => { this.serviceErrors = error.error }
         );
     }
   }
-
 }

@@ -27,6 +27,9 @@ export class ClientService {
     return this.http.post(`${this.adminApi}/api/employee/save`, data);
   }
 
+  updateEmployee(data) {
+    return this.http.post(`${this.adminApi}/api/employee/update`, data);
+  }
   getEmployees() {
     return this.http.get(`${this.adminApi}/api/employee/all`)
   }

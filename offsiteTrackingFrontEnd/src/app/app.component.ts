@@ -17,7 +17,9 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private store: Store<State>) {
     this.user$ = this.store.pipe(select('user'));
-    console.log(this.user$)
+    this.user$.subscribe(data => {
+      console.log(data)
+    })
   }
   title = 'offsiteTrackingFrontEnd';
 
