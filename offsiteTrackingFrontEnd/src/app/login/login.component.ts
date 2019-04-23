@@ -42,16 +42,9 @@ export class LoginComponent implements OnInit {
 
   }
   onSubmit() {
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-    
+   
     console.log("login");
-=======
 
->>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
-=======
->>>>>>> 89c7e08046c0355ba80daeac5c565f0310eebc0c
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -66,18 +59,13 @@ export class LoginComponent implements OnInit {
               userType,
               email
             }))
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
             return this.router.navigate(['user']);
-=======
+
             if (userType == 'admin')
               return this.router.navigate(['Schedule']);
             else
               return this.router.navigate(['mySchedule']);
->>>>>>> 89c7e08046c0355ba80daeac5c565f0310eebc0c
           },
           error => { this.serviceErrors = error.error }
         );

@@ -5,5 +5,7 @@ export interface ISchedule {
     location:string;
     placeName:string;
     checkindate:string;
+    scheduleId:string;
+
 }
 

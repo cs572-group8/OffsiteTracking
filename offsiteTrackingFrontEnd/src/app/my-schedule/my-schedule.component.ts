@@ -14,30 +14,36 @@ import { Router } from '@angular/router';
   selector: 'app-my-schedule',
   templateUrl: './my-schedule.component.html',
   styleUrls: ['./my-schedule.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class MyScheduleComponent implements OnInit {
   lat: any;
   lng: any;
 
+
+
   mySchedule: any = [];
-
-
   constructor(private userService: UserService, private router: Router, private store: Store<State>) {
-
   }
 
   ngOnInit() {
-   
+
     this.userService.getMySchedule(this.userService.getPayLoad()._id)
-                       .subscribe(
-                        (data) => this.mySchedule = data);
-     // this.store.dispatch(new ScheduleAction.DeleteSchedule());
+      .subscribe(
+        (data) => this.mySchedule = data);
+    // this.store.dispatch(new ScheduleAction.DeleteSchedule());
   }
-  
-  CheckIn(empId, location, placeName, checkindate) {
-        console.log(location + "," + empId)
+
+  Destination(empId, location, placeName, checkindate, scheduleId) {
+    console.log(location + "," + empId, scheduleId)
     this.store.dispatch(new ScheduleAction.CreateSchedule(
-        { location, empId, placeName, checkindate }))
+      { location, empId, placeName, checkindate, scheduleId }))
     this.router.navigate(['mySchedule/geospatial']);
   }
 

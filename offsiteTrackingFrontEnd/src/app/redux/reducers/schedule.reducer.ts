@@ -8,12 +8,14 @@ export interface State {
     location: string;
     placeName: string;
     checkindate: string;
+    scheduleId:string
 };
 const initialState = {
     empId: '',
     location: '',
     placeName: '',
-    checkindate: ''
+    checkindate: '',
+    scheduleId:''
 }
 
 export function reducer(state: ISchedule = initialState, action: SchedulerAction.Actions) {
@@ -25,7 +27,8 @@ export function reducer(state: ISchedule = initialState, action: SchedulerAction
                 empId: '',
                 location: '',
                 placeName: '',
-                checkindate: ''
+                checkindate: '',
+                scheduleId:'',
             }
         default:
             return state;
