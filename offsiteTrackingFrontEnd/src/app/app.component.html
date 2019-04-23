@@ -11,6 +11,7 @@
       <a mat-button [routerLink]="['Schedule']" *ngIf="user.userType === 'admin'">Schedule</a>
       <a mat-button [routerLink]="['mySchedule']" *ngIf="user.userType === 'employee'">My
         Schedule</a>
+        <a mat-button class="password" [routerLink]="['password']" *ngIf="user.userType !== ''">Change Password</a>
       <a mat-button class="logout" [routerLink]="['logout']" *ngIf="user.userType !== ''">Logout</a>
     </div>
   </mat-toolbar-row>

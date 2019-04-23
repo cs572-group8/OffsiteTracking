@@ -24,6 +24,7 @@ import { metaReducers, reducers } from './redux/reducers';
 import { StoreModule } from '@ngrx/store';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { PasswordComponent } from './password/password.component';
 
 export const fireBaseCongig = config.firebaseConfig
 
@@ -38,6 +39,7 @@ export const fireBaseCongig = config.firebaseConfig
     IsVisibleDirective,
     LogoutDirective,
     GeospatialComponent,
+    PasswordComponent,
     LogoutComponent
   ],
   imports: [
