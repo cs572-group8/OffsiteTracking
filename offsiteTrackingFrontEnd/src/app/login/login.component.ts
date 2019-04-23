@@ -37,12 +37,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      //password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]],
+      password: ['', [Validators.required]]
     });
 
   }
   onSubmit() {
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     
@@ -50,6 +50,8 @@ export class LoginComponent implements OnInit {
 =======
 
 >>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
+=======
+>>>>>>> 89c7e08046c0355ba80daeac5c565f0310eebc0c
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -65,10 +67,17 @@ export class LoginComponent implements OnInit {
               email
             }))
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 20a885856f94e13782632cb278a1d0e392a13e0e
             return this.router.navigate(['user']);
+=======
+            if (userType == 'admin')
+              return this.router.navigate(['Schedule']);
+            else
+              return this.router.navigate(['mySchedule']);
+>>>>>>> 89c7e08046c0355ba80daeac5c565f0310eebc0c
           },
           error => { this.serviceErrors = error.error }
         );

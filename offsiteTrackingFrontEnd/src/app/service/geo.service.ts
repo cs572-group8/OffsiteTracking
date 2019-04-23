@@ -43,9 +43,10 @@ export class GeoService {
     
              return this.http.get(`${this.googleapiDistance}origins=${latlng},${latlog}&destinations=${latlngdis},${latlogdis}&key=${config.googleMapsKey}`).subscribe(
                res=>{
-                let locationInfo: any = res
-                  // console.log(locationInfo.rows[0].elements[0])
-                      console.log(locationInfo.rows[0])
+                let locationInfo: any 
+                let info: any = {}
+                  info= locationInfo.rows[0].elements[0]
+                    
                }
              )
   }
