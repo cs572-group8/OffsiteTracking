@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../models/UserModel');
 const ObjectId = require('mongodb').ObjectID;
-
+const Place=require('../models/PlaceModel')
 router.post('/checkin', (req, res) => {
     console.log("req", req.body);
     checkin = {
@@ -56,5 +56,13 @@ router.get('/all', (req, res) => {
             res.status(200).json(doc)
         })
 })
+router.get('/schedule/:id', (req, res) => {
+    userid = new ObjectId(req.params.id);
+    console.log(userid);
+    Place.find({ 'schedule.employeeId': new ObjectId(req.params.id) }
+        , { schedule: 1, address: 1, location: 1, placeName: 1 }).populate('schedule.employeeId')
+        .then(doc => res.json(doc)).catch(err=>res.json(err));
 
+});
+ 
 module.exports = router

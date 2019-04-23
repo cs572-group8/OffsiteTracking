@@ -1,77 +1,46 @@
+
+import { reducers } from './../redux/reducers/index';
+import { Store } from '@ngrx/store';
 import { UserService } from './../service/user.service';
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
 import { MAT_CHECKBOX_CLICK_ACTION, ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { State } from '../redux/reducers'
+import * as ScheduleAction from '../redux/actions/schedule.action'
+import { ScheduleComponent } from '../schedule/schedule.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-my-schedule',
   templateUrl: './my-schedule.component.html',
   styleUrls: ['./my-schedule.component.scss'],
 })
 export class MyScheduleComponent implements OnInit {
-  @Output() Show;
-  lat:any;
+  lat: any;
   lng: any;
 
-  Confirmation: any = {
-    id: "",
-    placeName: "",
-    checkInDate: "",
-    checkInTime: "",
-    status: ""
-  }
   mySchedule: any = [];
 
 
-  constructor(private userService: UserService) {
-    
-   }
+  constructor(private userService: UserService, private router: Router, private store: Store<State>) {
+
+  }
 
   ngOnInit() {
+   
     this.userService.getMySchedule(this.userService.getPayLoad()._id)
-      .subscribe(
-        (data) => this.mySchedule = data);
-       
+                       .subscribe(
+                        (data) => this.mySchedule = data);
+     // this.store.dispatch(new ScheduleAction.DeleteSchedule());
   }
-  CheckIn(event, mylocation, id, place, date) {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.lat = position.coords.latitude;
-      this.lng = position.coords.longitude;
+  
+  CheckIn(empId, location, placeName, checkindate) {
+        console.log(location + "," + empId)
+    this.store.dispatch(new ScheduleAction.CreateSchedule(
+        { location, empId, placeName, checkindate }))
+    this.router.navigate(['mySchedule/geospatial']);
+  }
 
-      const distance = this.userService.getDistanceFromLatLonInKm(this.lat, this.lng, mylocation[0], mylocation[1]);
-      if (distance > 100) {
-        const today = new Date();
-        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        const checkin = {
-          id: id,
-          placeName: place,
-          checkInDate: today,
-          checkInTime: time,
-          status: this.getStatus(date, today)
-        }
-        this.userService.saveCheckIn(checkin).subscribe((user) =>
-          this.Confirmation = user
-        )
-      } else {
-        this.Confirmation.status = "Please go to Right place to check in"
-      }
 
-    });
-  }
-  getStatus(timeToCheckn, checkInTIme) {
-    if (timeToCheckn < checkInTIme) {
-      timeToCheckn.setDate(timeToCheckn.getDate() + 1);
-    }
-    var diff = timeToCheckn - checkInTIme
-    diff = Math.floor(diff / 1000 / 60);
-    console.log(diff + "," + timeToCheckn + "," + checkInTIme)
-    if (diff > 30 && diff < 60) {
-      return "late";
-    } else if (diff > 60) {
-      return "The Assignment is Cancelled"
-    } else {
-      return "ontime"
-    }
-  }
 
 }

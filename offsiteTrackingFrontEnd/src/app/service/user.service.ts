@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
-
+  mygoogleapi;
   adminApi = "http://localhost:5000"
    emitter = new EventEmitter<any>();
   constructor(private http: HttpClient, private router: Router) { }
@@ -47,11 +47,11 @@ export class UserService {
   }
 
     getMySchedule(id:string){
-       return this.http.get(`${this.adminApi}/api/admin/schedule/`+id)
+       return this.http.get(`${this.adminApi}/api/employee/schedule/`+id)
       }
 
     saveCheckIn(checkin){
-      console.log(checkin);
+      console.log('saveCheckIn');
        return this.http.post(`${this.adminApi}/api/employee/checkin`,checkin);
     }
 

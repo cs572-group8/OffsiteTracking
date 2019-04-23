@@ -12,7 +12,9 @@ export class TokenInterceptor implements HttpInterceptor {
                 headers: req.headers.set('Authorization', localStorage.getItem('current_user'))
             })
         else
-            authReq = req.clone({})
+            authReq = req.clone({
+                headers:req.headers.set('Access-Control-Allow-Origin','*')
+            })
         return next.handle(authReq);
     }
 }

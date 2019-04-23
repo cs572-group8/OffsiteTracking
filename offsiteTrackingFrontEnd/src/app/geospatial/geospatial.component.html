@@ -1,11 +1,13 @@
 
    <mat-grid-list cols="2">
+
    <mat-grid-tile>
+    <h1>GPS Location</h1>
+     <button (click)="CheckIn()">please CheckIn</button>
+     <mat-error >{{Confirmation.checkInTime}}{{Confirmation.status}}</mat-error> 
    </mat-grid-tile>
-   <h1>GPS Location</h1>
-     <button>CheckIN</button>
-      <mat-grid-tile>
-  
+
+   <mat-grid-tile>
    <agm-map [latitude]="lat" [longitude]="lng">
   <agm-direction [origin]="origin" [destination]="destination">
       <agm-info-window>
@@ -15,4 +17,5 @@
   </agm-direction>
 </agm-map>
 </mat-grid-tile>
+ 
 </mat-grid-list>

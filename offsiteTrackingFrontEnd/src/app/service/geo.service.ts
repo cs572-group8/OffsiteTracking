@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { config } from 'src/environments/configKeys';
@@ -31,5 +32,21 @@ export class GeoService {
         console.log(err)
       }
     )
+  }
+  googleapiDistance: String = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&";
+ 
+  getDistanceInformation(latlng,latlog,latlngdis,latlogdis)
+  {
+    
+   
+    console.log('inside');
+    
+             return this.http.get(`${this.googleapiDistance}origins=${latlng},${latlog}&destinations=${latlngdis},${latlogdis}&key=${config.googleMapsKey}`).subscribe(
+               res=>{
+                let locationInfo: any = res
+                  // console.log(locationInfo.rows[0].elements[0])
+                      console.log(locationInfo.rows[0])
+               }
+             )
   }
 }

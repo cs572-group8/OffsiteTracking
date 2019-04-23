@@ -43,23 +43,15 @@ export class LoginComponent implements OnInit {
 
   }
   onSubmit() {
-<<<<<<< HEAD
 
     
-=======
     console.log("login");
->>>>>>> c9fdc6f5bada563ad5dc8f137aec54999be454c2
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
     } else {
       this.clientService.login(this.loginForm.value)
         .subscribe(
-<<<<<<< HEAD
-          (data: any) => {
-            this.userService.saveUser(data);
-            console.log('login successful');
-=======
           (result: any) => {
             this.userService.saveUser(result.token);
             const { name, userType } = result;
@@ -68,7 +60,6 @@ export class LoginComponent implements OnInit {
               userType
             }))
 
->>>>>>> c9fdc6f5bada563ad5dc8f137aec54999be454c2
             return this.router.navigate(['user']);
           },
           error => { this.serviceErrors = error.error }

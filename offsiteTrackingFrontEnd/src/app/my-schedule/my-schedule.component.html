@@ -7,7 +7,7 @@
             <mat-card-title>Destination Name:{{schedule.placeName}}</mat-card-title>
             <mat-card-content>
                 <strong>Destination Adress: </strong> <a  [routerLink]="['geospatial']"[queryParams]="{location:schedule.address.location}" >{{schedule.address.street}},{{schedule.address.city}}{{schedule.address.state}}</a>
-      <ol>
+                <ol>
         <li *ngFor="let emp of schedule.schedule">
           <br>
           <strong>Name</strong><p>{{emp.employeeId.fistName}}{{emp.employeeId.lastName}}</p>
@@ -17,8 +17,9 @@
           <mat-card-actions>
           <!-- <button
             (click)="CheckIn($event,schedule.address.location,emp.employeeId._id,schedule.placeName,emp.date)">CheckIn</button> -->
+            <button (click)="CheckIn(emp.employeeId._id,schedule.address.location,schedule.placeName,emp.date)">My Destination</button> 
           </mat-card-actions>
-            <mat-error >{{Confirmation.checkInTime}}{{Confirmation.status}}</mat-error>
+            <!-- <mat-error >{{Confirmation.checkInTime}}{{Confirmation.status}}</mat-error> -->
         </li>
       </ol>
       </mat-card-content>
