@@ -29,6 +29,10 @@ export class ClientService {
     return this.http.get(`${this.adminApi}/api/admin/schedules`)
   }
 
+  getScheduleDetail(id) {
+    return this.http.get(`${this.adminApi}/api/admin/detail/${id}`)
+  }
+
   saveSchedule(data) {
     return this.http.post(`${this.adminApi}/api/admin/schedule`, data)
   }

@@ -51,29 +51,44 @@ router.get('/schedule/:id', (req, res) => {
 });
 
 router.get('/schedules', (req, res) => {
-    // Place.find({}, { schedule: 1 })
-    //     .populate('schedule.employeeId')
-    //     .then(d => console.log(d[0].schedule))
-    result = Place.aggregate(
-        [{
-            $unwind: "$schedule"
-        }]
-    )
-        .project(
-            {
-                _id: 0,
-                address: { $concat: ['$placeName', ', ', '$address.street', '$address.city', ', ', '$address.state', ' ', { $toString: '$address.postalCode' }] },
-                schedule: 1
+    Place.aggregate([
+        { "$unwind": "$schedule" },
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "schedule.employeeId",
+                "foreignField": "_id",
+                "as": "employee"
             }
-        ).exec().then(docs => res.status(200).json(docs))
-        .catch(err => { throw err })
+        },
+        { "$unwind": "$employee" },
+        {
+            "$project": {
+                schedule: "$schedule._id",
+                employee: { $concat: ['$employee.firstName', ' ', '$employee.lastName'] },
+                email: '$employee.email',
+                date: '$schedule.date',
+                description: '$schedule.description',
+                address: { $concat: ['$placeName', ', ', '$address.street', '$address.city', ', ', '$address.state', ' ', { $toString: '$address.postalCode' }] },
+                status: '$schedule.status'
+            }
+        }
+    ]).then(docs => res.status(200).json(docs))
+})
 
-    // result.then(result => {
-    //     Place
-    //         .populate(result, { path: 'schedule.employeeId' })
-    //         .then(docs => res.status(200).json(docs))
-    //         .catch(err => { throw err })
-    // })
+router.get('/detail/:scheduleid', (req, res) => {
+    Place.findOne({ schedule: { $elemMatch: { _id: req.params.scheduleid } } })
+        .then(place => {
+            Place.findOne({ 'schedule._id': req.params.scheduleid }, { 'schedule.$': 1 })
+                .then(schedule => {
+                    place.schedule = schedule.schedule[0]
+                    res.status(200).json(place)
+                }).catch(err => {
+                    throw err
+                });
+        }).catch(err => {
+            throw err
+        })
 })
 
 module.exports = router;

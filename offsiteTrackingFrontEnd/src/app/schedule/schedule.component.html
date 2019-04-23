@@ -4,29 +4,30 @@
       <div class="example-container">
         <h2>Create a Schedule </h2>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Place Name" value="" formControlName="placeName">
+          <input matInput placeholder="Place Name" value="" formControlName="placeName" [value]="place.placeName">
         </mat-form-field>
 
         <div formGroupName="address">
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Address" formControlName="street"></textarea>
+            <textarea matInput placeholder="Address" formControlName="street" [value]="place.address.street"></textarea>
           </mat-form-field>
 
           <table class="example-full-width" cellspacing="0">
             <tr>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="City" formControlName="city">
+                  <input matInput placeholder="City" formControlName="city" [value]="place.address.city">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="State" formControlName="state">
+                  <input matInput placeholder="State" formControlName="state" [value]="place.address.state">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
-                  <input matInput #postalCode maxlength="5" placeholder="Postal Code" formControlName="postalCode">
+                  <input matInput #postalCode maxlength="5" placeholder="Postal Code" formControlName="postalCode"
+                    [value]="place.address.postalCode">
                   <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
                 </mat-form-field>
               </td>
@@ -34,27 +35,30 @@
           </table>
 
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="[longitude,latitude]" id="location" formControlName="location">
+            <input matInput placeholder="[longitude,latitude]" id="location" formControlName="location"
+              [value]="place.address.location">
           </mat-form-field>
         </div>
 
         <div formGroupName="schedule">
           <mat-form-field class="example-full-width">
             <mat-select placeholder="Select Employee" formControlName="employeeId">
-              <mat-option *ngFor="let employee of employees" value="{{employee._id}}">
+              <mat-option *ngFor="let employee of employees" value="{{employee._id}}" selected=true>
                 {{employee.fistName}} {{employee.lastName}}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput type="datetime-local" placeholder="Schedule Time and Date" formControlName="date">
+            <input matInput type="datetime-local" placeholder="Schedule Time and Date" formControlName="date"
+              [value]="place.schedule.date">
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+            <textarea matInput placeholder="Description" formControlName="description"
+              [value]="place.schedule.description"></textarea>
           </mat-form-field>
         </div>
         <mat-card-actions>
-          <button mat-raised-button (click)="save()" color="primary">Register</button>
-          <button mat-raised-button type="reset" color="primary">Clear</button>
+          <button mat-raised-button (click)="save()" color="primary" [disabled]="!scheduleForm.valid">Register</button>
+          <button mat-raised-button type="reset" color="primary" [disabled]='scheduleDetail.detail'>Clear</button>
         </mat-card-actions>
 
       </div>

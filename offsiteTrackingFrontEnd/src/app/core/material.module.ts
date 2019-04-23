@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatNativeDateModule, MatGridListModule, MatSnackBarModule, MatProgressBarModule, MatPaginatorModule
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatNativeDateModule, MatGridListModule, MatSnackBarModule, MatProgressBarModule, MatPaginatorModule, MatChipsModule
 } from '@angular/material';
 @NgModule({
   imports: [
@@ -23,7 +23,8 @@ import {
     MatGridListModule,
     MatSnackBarModule,
     MatProgressBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatChipsModule
   ],
   exports: [
     CommonModule,
@@ -42,7 +43,8 @@ import {
     MatGridListModule,
     MatSnackBarModule,
     MatProgressBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatChipsModule
   ],
 })
 export class CustomMaterialModule { }

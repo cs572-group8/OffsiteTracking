@@ -1,7 +1,6 @@
 import { UserService } from './../service/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ClientService } from '../service/client-service.service';
 import { Store } from '@ngrx/store';
@@ -57,9 +56,8 @@ export class LoginComponent implements OnInit {
               userType,
               email
             }))
-            return this.router.navigate(['user']);
             if (userType == 'admin')
-              return this.router.navigate(['Schedule']);
+              return this.router.navigate(['']);
             else
               return this.router.navigate(['mySchedule']);
           },

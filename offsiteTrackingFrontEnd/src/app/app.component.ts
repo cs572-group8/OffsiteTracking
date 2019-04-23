@@ -15,7 +15,11 @@ import { IUser } from './models/user.model';
 export class AppComponent implements OnInit {
   user$: Observable<IUser>;
 
-  constructor(private router: Router, private userService: UserService, private store: Store<State>) {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private store: Store<State>
+  ) {
     this.user$ = this.store.pipe(select('user'));
   }
   title = 'offsiteTrackingFrontEnd';

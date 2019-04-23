@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ClientService } from '../service/client-service.service';
 import { Observable } from 'rxjs';
 import { GeoService } from '../service/geo.service';
 import { DataService } from '../service/data.service';
 import { MatSnackBar } from '@angular/material';
+import { Store, select } from '@ngrx/store';
+import { State } from '../redux/reducers';
+import { IScheduleDetail } from '../models/scheduledetail.model';
+import * as DetailActions from '../redux/actions/detail.action'
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss']
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent implements OnInit, OnDestroy {
   scheduleForm: FormGroup;
   snackBarRef
   showFiller = false;
@@ -21,14 +25,10 @@ export class ScheduleComponent implements OnInit {
   locationChosen = false;
 
   latlng: String = '';
-
   employees: any = []
-  address: any = {
-    city: "",
-    country: "",
-    postalCode: "",
-    state: "",
-    street: ""
+  scheduleDetail: IScheduleDetail = {
+    scheduleId: "",
+    detail: false
   }
 
   constructor(
@@ -36,27 +36,35 @@ export class ScheduleComponent implements OnInit {
     private service: ClientService,
     private dataservice: DataService,
     private geoservice: GeoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private store: Store<State>
   ) {
+    this.store.pipe(select('detail')).subscribe(
+      data => {
+        this.scheduleDetail = data
+      }
+    );
     this.scheduleForm = this.formBuilder.group({
-      placeName: ['', [Validators.required]],
+      placeName: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
       address: this.formBuilder.group({
-        state: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        street: ['', [Validators.required]],
-        postalCode: ['', [Validators.required]],
-        location: ['', [Validators.required], this.locationValidator]
+        state: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+        city: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+        street: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+        postalCode: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+        location: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required], this.locationValidator]
       }),
       schedule: this.formBuilder.group(
         {
-          employeeId: ['', [Validators.required]],
-          date: ['', [Validators.required]],
-          description: ['', [Validators.required]]
+          employeeId: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+          date: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+          description: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]]
         }
       )
     });
 
     this.getUserLocation()
+    if (this.scheduleDetail.detail)
+      this.getScheduleDetail();
   }
 
   ngOnInit() {
@@ -64,13 +72,15 @@ export class ScheduleComponent implements OnInit {
   }
 
   onChoseLocation(event) {
-    let coords = event.coords;
-    this.lat = coords.lat;
-    this.lng = coords.lng;
-    this.locationChosen = true;
-    this.latlng = `${coords.lat},${coords.lng}`;
-    this.scheduleForm.get("address").get('location').setValue(this.latlng)
-    this.fillAdress();
+    if (!this.scheduleDetail.detail) {
+      let coords = event.coords;
+      this.lat = coords.lat;
+      this.lng = coords.lng;
+      this.locationChosen = true;
+      this.latlng = `${coords.lat},${coords.lng}`;
+      this.scheduleForm.get("address").get('location').setValue(this.latlng)
+      this.fillAdress();
+    }
   }
 
   fillAdress() {
@@ -154,5 +164,41 @@ export class ScheduleComponent implements OnInit {
       res => { this.employees = res },
       err => { console.log(err) }
     )
+  }
+  place = {
+    "address": {
+      "state": "",
+      "city": "",
+      "street": "",
+      "postalCode": "",
+      "location": ""
+    },
+    "placeName": "",
+    "schedule": {
+      "date": "",
+      "employeeId": "",
+      "description": ""
+    }
+  };
+  getScheduleDetail() {
+    this.service.getScheduleDetail(this.scheduleDetail.scheduleId)
+      .subscribe(
+        (result: any) => {
+          let coord = result.address.location;
+          result.address.location = `${coord[0]},${coord[1]}`
+          this.lat = coord[0];
+          this.lng = coord[1];
+          result.schedule = result.schedule[0]
+          result.schedule.date = result.schedule.date.split('.')[0]
+          this.place = result
+        },
+        err => {
+          console.log(err);
+        }
+      )
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(new DetailActions.DeleteDetail())
   }
 }

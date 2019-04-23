@@ -8,20 +8,23 @@ import {
 import { localStorageSync } from 'ngrx-store-localstorage';
 import * as userReducer from './user.reducer'
 import * as scheduleReducer from './schedule.reducer'
+import * as detailReducer from './detail.reducer'
 import { environment } from '../../../environments/environment';
 export interface State {
     user: userReducer.State,
-    schedule:scheduleReducer.State
+    schedule: scheduleReducer.State,
+    detail: detailReducer.State
 }
 
 export const reducers: ActionReducerMap<State> = {
     user: userReducer.reducer,
-    schedule: scheduleReducer.reducer
+    schedule: scheduleReducer.reducer,
+    detail: detailReducer.reducer
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
     return localStorageSync({
-        keys: ['user'],
+        keys: ['user', 'detail'],
         rehydrate: true
     })(reducer);
 }

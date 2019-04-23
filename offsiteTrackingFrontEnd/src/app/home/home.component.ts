@@ -1,19 +1,27 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ClientService } from '../service/client-service.service';
+import { Store } from '@ngrx/store';
+import { State } from '../redux/reducers'
+import * as DetailActions from '../redux/actions/detail.action'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['employee', 'email', 'date', 'address', 'status', 'detail'];
+  ELEMENT_DATA: PeriodicElement[] = []
+  dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private clientservice: ClientService) {
+  constructor(private clientservice: ClientService,
+    private store: Store<State>,
+    private router: Router) {
     this.getSchedules()
   }
 
@@ -23,42 +31,30 @@ export class HomeComponent implements OnInit {
 
   getSchedules() {
     this.clientservice.getSchedules().subscribe(
-      res => {
-        console.log(res);
+      (res: PeriodicElement[]) => {
+        this.ELEMENT_DATA = res
+        this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
       },
       err => {
         console.log(err);
       }
     )
   }
+
+  detail(event, id) {
+    const { scheduleId, detail } = { scheduleId: id, detail: true }
+    this.store.dispatch(new DetailActions.SaveDetail({
+      scheduleId, detail
+    }))
+    this.router.navigate(['Schedule'])
+  }
 }
 
 export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  schedule: string,
+  address: string;
+  date: Date;
+  email: string;
+  employee: string;
+  status: boolean;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  { position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na' },
-  { position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg' },
-  { position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al' },
-  { position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si' },
-  { position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P' },
-  { position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S' },
-  { position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
-  { position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
-  { position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
-  { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
-];
