@@ -13,7 +13,6 @@ export class GeoService {
   googleapi: string = "http://localhost:5000/api/google";
   constructor(private dataService: DataService, public http: HttpClient) {
   }
-
   getLocationInformation(latlng) {
     return this.http.get(`${this.googleapi}/geocode/${latlng}`).subscribe(
       res => {
