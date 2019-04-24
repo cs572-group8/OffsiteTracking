@@ -17,3 +17,8 @@ tr:nth-child(2n){
 tr:nth-child(2n+1){
     background-color: rgba(157, 158, 157, 0.39);
 }
+
+mat-chip{
+    border-radius: 7px;
+    padding: 5px;
+}

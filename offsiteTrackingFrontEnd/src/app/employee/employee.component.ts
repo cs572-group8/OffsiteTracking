@@ -76,10 +76,11 @@ export class EmployeeComponent implements OnInit {
     if (this.employeeForm.invalid == true) {
       return;
     } else {
+      this.errorMessage = ''
       this.service.saveEmployee(this.employeeForm.value)
         .subscribe(
           (response: any) => {
-            this.employeeForm.reset({ onlySelf: false, emitEvent: false })
+            // this.employeeForm.reset({ onlySelf: false, emitEvent: false })
             this.snackBar.open(response.message, 'Close', { duration: 3000 });
           },
           err => {

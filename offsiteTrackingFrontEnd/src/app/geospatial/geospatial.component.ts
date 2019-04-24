@@ -89,7 +89,7 @@ export class GeospatialComponent implements OnInit {
             this.Information.distance = res.distance,
             this.Information.duration = res.duration
           this.errorValidation = true;
-          if (parseFloat(this.Information.distance) * 1000 < 1000) {
+          if (parseFloat(this.Information.distance) * 1000 < 500) {
             const today = new Date();
             const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             const checkin = {

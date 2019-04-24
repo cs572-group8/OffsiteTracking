@@ -25,7 +25,12 @@ export class MyScheduleComponent implements OnInit {
 
   mySchedule: any = [];
   notavilable: boolean = false;
+
+  requestCounter: number = 0
   constructor(private userService: UserService, private router: Router, private store: Store<State>) {
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      this.requestCounter = result.counter
+    })
   }
 
   ngOnInit() {
@@ -34,12 +39,18 @@ export class MyScheduleComponent implements OnInit {
       this.lng = position.coords.longitude;
       this.userService.getMySchedule(this.userService.getPayLoad()._id, this.lat, this.lng)
         .subscribe(
-          (data) => this.mySchedule = data,
-          (err) => console.log(err),
+          (data) => {
+            this.mySchedule = data
+          },
+          (err) => {
+            console.log(err)
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+          },
           () => {
             if (this.mySchedule.length === 0) {
               this.notavilable = true;
             }
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
           }
 
         )
