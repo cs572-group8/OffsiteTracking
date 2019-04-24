@@ -1,8 +1,11 @@
 <div id="wrapper">
   <div id="left">
+      <img src="assets/images/GPS.jpg" />
+      
     <ul>
       <li>
         <h2>GPS Location</h2>
+        <mat-error>{{Information.warning}}</mat-error>
       </li>
       <li>
         <h4>Destination: {{place}}</h4>
@@ -10,10 +13,13 @@
       <li>
         <h4>Starting Time: {{checkindate}}</h4>
       </li>
+      <li>
+          <button (click)="CheckIn()" mat-raised-button>Please CheckIn<i class="material-icons">place </i></button>
+
+      </li>
     </ul>
 
-    <button (click)="CheckIn()">please CheckIn</button>
-
+    
     <ul *ngIf="errorValidation" >
          <h4>Your Position</h4>
       <li> <h4>Destination:{{Information.distination}}</h4>  </li>
@@ -21,12 +27,12 @@
       <li> <h5>Distance from Destination:{{Information.distance}}</h5>   </li>
       <li><h5>Duration to reach:{{Information.duration}}</h5>  </li>
     </ul>
-    <mat-error>{{Information.warning}}</mat-error>
+    
     <br>
     
     
     <button (click)="sendToMySchedule()" class="btn waves-effect waves-light" *ngIf="aftercheck" >Next Schedule
-    <i class="material-icons right">send</i>
+      <i class="material-icons">place </i>
   </button>
   </div>
   <div id="right">

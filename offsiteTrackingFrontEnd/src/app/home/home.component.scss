@@ -11,3 +11,9 @@ table {
 .home-header {
     margin: 20x
 }
+tr:nth-child(2n){
+    background-color: rgb(248, 240, 240);
+}
+tr:nth-child(2n+1){
+    background-color: rgba(157, 158, 157, 0.39);
+}

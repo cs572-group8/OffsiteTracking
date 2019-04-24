@@ -36,7 +36,7 @@ router.get('/distance/:origins/:destinations', (req, res) => {
     axios.get(url)
         .then(result => {
             console.log(result.data)
-            res.status(200).json({ success: true })
+            res.status(200).json(result.data)
         })
         .catch(error => { throw error })
 })
