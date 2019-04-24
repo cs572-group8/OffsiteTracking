@@ -4,29 +4,16 @@
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-
       <form class="example-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-
         <mat-form-field class="example-full-width">
           <input matInput placeholder="email" formControlName="email" name="email" required>
           <mat-error *ngIf="invalidEmail()">Invalid email address.</mat-error>
         </mat-form-field>
-
-
-
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Password" formControlName="password" type="password" name="password" required>
           <mat-error *ngIf="invalidPassword()">Invalid Password.</mat-error>
         </mat-form-field>
 
-
-        <mat-form-field>
-          <mat-select placeholder="Select">
-            <mat-option value="option">Administrator</mat-option>
-            <mat-option value="option">Employee</mat-option>
-          </mat-select>
-        </mat-form-field>
         <mat-error>{{serviceErrors?.message}}</mat-error>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
 
