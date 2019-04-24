@@ -10,6 +10,7 @@ import * as LoaderActions from '../redux/actions/loader.action'
 })
 export class GeoService {
 
+
   googleapi: string = "http://localhost:5000/api/google";
   requestCounter: number = 0;
 
@@ -25,6 +26,7 @@ export class GeoService {
   getLocationInformation(latlng) {
     return this.http.get(`${this.googleapi}/geocode/${latlng}`)
   }
+
   getDistanceInformation(latlng, latlog, latlngdis, latlogdis) {
     return this.http.get(`${this.googleapi}/distance/${latlng},${latlog}/${latlngdis},${latlogdis}`).subscribe(
       res => {

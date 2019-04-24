@@ -70,14 +70,17 @@ router.get('/all', (req, res) => {
             res.status(200).json(doc)
         })
 })
-
-router.get('/schedule/:id', (req, res) => {
+router.get('/schedule/:id/:lat/:lng', (req, res) => {
     userid = new ObjectId(req.params.id);
-    console.log(userid);
-    Place.find({ schedule: { $elemMatch: { status: 'false', employeeId: userid } } }
-        , { schedule: 1, address: 1, location: 1, placeName: 1 }).populate('schedule.employeeId')
-        .then(doc => res.json(doc)).catch(err => res.json(err))
-        .catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
+    console.log(req.params.lat + "," + req.params.lng);
+    Place.find({
+        'address.location': { $near: [req.params.lat, req.params.lng] },
+        schedule: { $elemMatch: { employeeId: userid, status: 'false' } }
+    },
+        { schedule: 1, address: 1, location: 1, placeName: 1 })
+        .populate('schedule.employeeId')
+        .then(doc => res.json(doc)).catch(err => res.json(err));
+
 });
 
 router.post('/update', (req, res) => {

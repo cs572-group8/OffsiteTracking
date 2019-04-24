@@ -46,9 +46,12 @@ export class UserService {
     }
   }
 
-    getMySchedule(id:string){
+    getMySchedule(id:string,lat,lng){
+      
       console.log("myid",id)
-       return this.http.get(`${this.adminApi}/api/employee/schedule/`+id)
+     // return this.http.get(`${this.adminApi}/api/employee/schedule/${id}`)
+       return this.http.get(`${this.adminApi}/api/employee/schedule/${id}/${lat}/${lng}`)
+      
       }
 
     saveCheckIn(checkin){

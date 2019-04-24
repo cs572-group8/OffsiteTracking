@@ -24,28 +24,27 @@ export class MyScheduleComponent implements OnInit {
   lng: any;
 
   mySchedule: any = [];
-  requestCounter: number = 0
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    private store: Store<State>
-  ) {
-    this.store.pipe(select('loader')).subscribe((result: any) => {
-      this.requestCounter = result.counter
-    })
+  notavilable: boolean = false;
+  constructor(private userService: UserService, private router: Router, private store: Store<State>) {
   }
 
   ngOnInit() {
-    this.userService.getMySchedule(this.userService.getPayLoad()._id)
-      .subscribe(
-        (data) => this.mySchedule = data,
-        err => {
-          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
-        },
-        () => {
-          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
-        }
-      );
+    navigator.geolocation.getCurrentPosition(position => {
+      this.lat = position.coords.latitude;
+      this.lng = position.coords.longitude;
+      this.userService.getMySchedule(this.userService.getPayLoad()._id, this.lat, this.lng)
+        .subscribe(
+          (data) => this.mySchedule = data,
+          (err) => console.log(err),
+          () => {
+            if (this.mySchedule.length === 0) {
+              this.notavilable = true;
+            }
+          }
+
+        )
+    })
+    // this.store.dispatch(new ScheduleAction.DeleteSchedule());
   }
 
   Destination(empId, location, placeName, checkindate, scheduleId) {

@@ -34,6 +34,7 @@ router.get('/distance/:origins/:destinations', (req, res) => {
     let url = `${googleapi}/distancematrix/json?origins=${origins}&destinations=${destinations}&key=${cfg.directionKey}`;
     axios.get(url)
         .then(result => {
+            console.log(result.data)
             res.status(200).json(result.data)
         })
         .catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
