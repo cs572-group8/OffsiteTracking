@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ClientService } from '../service/client-service.service';
-import { Router } from '@angular/router';
-import { DataService } from '../service/data.service';
 import { GeoService } from '../service/geo.service';
+import { Store, select } from '@ngrx/store';
+import { State } from '../redux/reducers'
+import * as LoaderActions from '../redux/actions/loader.action'
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-employee',
@@ -31,24 +32,29 @@ export class EmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   errorMessage: String;
 
+  requestCounter: number = 0;
+
   constructor(
     private formBuilder: FormBuilder,
     private service: ClientService,
-    private dataservice: DataService,
     private geoservice: GeoService,
-    private router: Router
+    private store: Store<State>,
+    private snackBar: MatSnackBar,
   ) {
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      this.requestCounter = result.counter
+    })
     this.employeeForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      jobTitle: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      state: ['', [Validators.required]],
+      firstName: [{ value: '', disabled: this.requestCounter > 1 }, Validators.required],
+      lastName: [{ value: '', disabled: this.requestCounter > 1 }, Validators.required],
+      jobTitle: [{ value: '', disabled: this.requestCounter > 1 }, Validators.required],
+      email: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required, Validators.email]],
+      phone: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]],
+      address: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]],
+      city: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]],
+      state: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]],
       type: ['employee'],
-      postalCode: ['', [Validators.required]]
+      postalCode: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]]
     });
   }
 
@@ -72,37 +78,53 @@ export class EmployeeComponent implements OnInit {
     } else {
       this.service.saveEmployee(this.employeeForm.value)
         .subscribe(
-          (data: any) => {
-            this.service.saveEmployee(data);
-            console.log('employee saved successful');
-            return this.router.navigate(['user']);
+          (response: any) => {
+            this.employeeForm.reset({ onlySelf: false, emitEvent: false })
+            this.snackBar.open(response.message, 'Close', { duration: 3000 });
           },
-          error => { this.errorMessage = error.error.message }
+          err => {
+            this.errorMessage = err.error.message
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+            this.snackBar.open(err.error.message, 'Close', { duration: 3000 });
+          },
+          () => {
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+          }
         );
     }
   }
 
   onChoseLocation(event) {
-    let coords = event.coords;
-    this.lat = coords.lat;
-    this.lng = coords.lng;
-    this.locationChosen = true;
-    this.latlng = `${coords.lat},${coords.lng}`;
-    this.fillAdress();
+    if (this.requestCounter <= 0) {
+      let coords = event.coords;
+      this.lat = coords.lat;
+      this.lng = coords.lng;
+      this.locationChosen = true;
+      this.latlng = `${coords.lat},${coords.lng}`;
+      this.fillAdress();
+    }
   }
 
   fillAdress() {
-    this.geoservice.getLocationInformation(this.latlng)
-    this.dataservice.emitter.subscribe(res => {
-      this.employeeForm.get('address').setValue(res.street.trim())
-      this.employeeForm.get('city').setValue(res.city.trim())
-      this.employeeForm.get('state').setValue(res.state.trim())
-      this.employeeForm.get('postalCode').setValue(res.postalCode.trim())
+    this.geoservice.getLocationInformation(this.latlng).subscribe(
+      (res: any) => {
+        this.employeeForm.get('address').setValue(res.street.trim())
+        this.employeeForm.get('city').setValue(res.city.trim())
+        this.employeeForm.get('state').setValue(res.state.trim())
+        this.employeeForm.get('postalCode').setValue(res.postalCode.trim())
 
-      this.employeeForm.get('address').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.employeeForm.get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.employeeForm.get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.employeeForm.get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-    })
+        this.employeeForm.get('address').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.employeeForm.get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.employeeForm.get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.employeeForm.get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+      },
+      err => {
+        console.log(err)
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      },
+      () => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      }
+    )
   }
 }

@@ -1,3 +1,14 @@
 .logout{
-    flex: 1 1 auto;
+    flex: 1 1 auto; 
+    position: absolute;
+    right: 20px;
 }
+.user {
+  margin-left: 10px; 
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.mat-icon {
+    vertical-align: middle;
+  }

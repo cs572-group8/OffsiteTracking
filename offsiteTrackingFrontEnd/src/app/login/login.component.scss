@@ -1,13 +1,36 @@
 
+.background{
+  position: absolute;
+  width: 100%;
+  height: 100;
+  z-index: 0;
+}
 .main-div{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .example-full-width{
-    display: block;
-  }
-  .example-card{
-    width: 50%;
-  }
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.example-full-width{
+  display: block;
+}
+.example-card{
+  width: 45%;
+  background:rgba(255,255,255, 0.7);
+}
+
+.example-form {
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.text-center {
+  font-size: 30px;
+  text-align: center;
+}
+.img-traking{
+  max-width: 180px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

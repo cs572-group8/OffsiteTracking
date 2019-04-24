@@ -66,7 +66,9 @@ router.get('/schedules', (req, res) => {
                 status: '$schedule.status'
             }
         }
-    ]).then(docs => res.status(200).json(docs))
+    ])
+        .then(docs => res.status(200).json(docs))
+        .catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
 })
 
 router.get('/detail/:scheduleid', (req, res) => {
@@ -76,9 +78,7 @@ router.get('/detail/:scheduleid', (req, res) => {
                 .then(schedule => {
                     place.schedule = schedule.schedule[0]
                     res.status(200).json(place)
-                }).catch(err => {
-                    throw err
-                });
+                }).catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
         }).catch(err => {
             throw err
         })

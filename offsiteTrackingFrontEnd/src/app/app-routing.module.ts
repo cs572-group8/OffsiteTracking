@@ -9,6 +9,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PasswordComponent } from './password/password.component';
 import { HomeComponent } from './home/home.component';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -19,8 +20,9 @@ const routes: Routes = [
   { path: 'Schedule', component: ScheduleComponent, canActivate: [AuthGuard] },
   { path: 'mySchedule', component: MyScheduleComponent, canActivate: [AuthGuard] },
   { path: 'mySchedule/geospatial', component: GeospatialComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/' }
+  { path: '**', redirectTo: '/', canActivate: [LoginGuard] }
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

@@ -2,7 +2,7 @@
   <mat-grid-tile>
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
       <div class="example-container">
-        <h2>Employee Information</h2>
+        <h2> <i class="fa fa-user-plus"></i> Add Employee</h2>
         <mat-error class="txt-center" *ngIf="errorMessage">{{errorMessage}}</mat-error>
         <table class="example-full-width" cellspacing="0">
           <tr>
@@ -62,8 +62,9 @@
         </mat-form-field>
 
         <mat-card-actions>
-          <button mat-raised-button type="submit" color="primary" [disabled]="!employeeForm.valid">Register</button>
-          <button mat-raised-button type="reset" color="primary">Clear</button>
+          <button mat-raised-button type="submit" color="primary"
+            [disabled]="!employeeForm.valid  || this.requestCounter > 0">Register</button>
+          <button mat-raised-button type="reset" color="primary" [disabled]='this.requestCounter > 0'>Clear</button>
         </mat-card-actions>
       </div>
     </form>

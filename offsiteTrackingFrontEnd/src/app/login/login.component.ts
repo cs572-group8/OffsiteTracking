@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService } from '../service/client-service.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '../redux/reducers'
 import * as UserActions from '../redux/actions/user.action'
+import * as LoaderActions from '../redux/actions/loader.action'
 
 @Component({
   selector: 'app-login',
@@ -18,14 +19,18 @@ export class LoginComponent implements OnInit {
   submitted = false;
   data;
   user;
-
+  requestCounter: number = 1;
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private clientService: ClientService,
     private store: Store<State>,
     private router: Router
-  ) { }
+  ) {
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      setTimeout(() => this.requestCounter = result.counter, 0)
+    })
+  }
   invalidPassword() {
     return (this.submitted && this.loginForm.controls.password.errors != null);
   }
@@ -35,13 +40,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      email: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required, Validators.email]],
+      password: [{ value: '', disabled: this.requestCounter > 1 }, [Validators.required]]
     });
 
   }
   onSubmit() {
-    console.log("login");
     this.submitted = true;
     if (this.loginForm.invalid == true) {
       return;
@@ -61,7 +65,14 @@ export class LoginComponent implements OnInit {
             else
               return this.router.navigate(['mySchedule']);
           },
-          error => { this.serviceErrors = error.error }
+          error => {
+            this.serviceErrors = error.error
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+          },
+          () => {
+            console.log(this.requestCounter);
+            this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+          }
         );
     }
   }

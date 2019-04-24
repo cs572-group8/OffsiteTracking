@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { UserService } from '../service/user.service';
 import { ClientService } from '../service/client-service.service';
-import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IUser } from '../models/user.model';
 import { State } from '../redux/reducers';
+import { MatSnackBar } from '@angular/material';
+import * as LoaderActions from '../redux/actions/loader.action'
 
 @Component({
   selector: 'app-password',
@@ -14,62 +13,57 @@ import { State } from '../redux/reducers';
   styleUrls: ['./password.component.scss']
 })
 export class PasswordComponent implements OnInit {
-  passwordForm:FormGroup; 
-  passwordMatch:boolean;
-  submitted = false;
-  errorMessage:string;
+  passwordForm: FormGroup;
+  passwordMatch: boolean;
+  errorMessage: string;
+  requestCounter: number = 0
 
-  user$: Observable<IUser>;
-  user = {name: "", email: "",type:""}
   constructor(
-    private formBuilder:FormBuilder, 
-    public userService: UserService,
+    private formBuilder: FormBuilder,
     private service: ClientService,
-    private router: Router,
-    private store: Store<State>) 
-    {
+    private snackBar: MatSnackBar,
+    private store: Store<State>) {
     this.passwordForm = this.formBuilder.group({
-      firstName:[''],
-      lastName:[''],
-      email:[''],
-      newPass:['',Validators.required],
-      newPassConfirm:['',Validators.required]
+      password: ['', Validators.required],
+      verify: ['', [Validators.required], this.passwordValidator.bind(this)]
     });
-   }
-  
-  ngOnInit() {
-    this.user$ = this.store.pipe(select('user'));
-    this.user$.subscribe(result => {
-      this.user.email = result.email;
-      this.user.name = result.name;
-      this.user.type = result.userType;
-    }); 
-    this.passwordForm.get('firstName').setValue(this.user.name);
-    this.passwordForm.get('email').setValue(this.user.email);
+
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      this.requestCounter = result.counter
+    })
   }
-  confirmPassword(){
-      if (this.passwordForm.get('newPass').value != this.passwordForm.get('newPassConfirm').value){
-          console.log('password not match!' + this.passwordForm.get('newPass').value +' '+this.passwordForm.get('newPassConfirm').value);
-          this.passwordMatch = false;
-      } else this.passwordMatch = true;
+
+  passwordValidator(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>(
+      (resolve, reject) => {
+        setTimeout(() => {
+          if (this.passwordForm && control.value == this.passwordForm.get("password").value)
+            resolve(null);
+          else
+            resolve({ 'invalid': true })
+        }, 0);
+      }
+    );
+    return promise;
+  }
+
+  ngOnInit() {
   }
 
   onSubmit() {
-      this.submitted = true;
-      if (this.passwordForm.invalid == true) {
-        return;
-      } else {
-        this.service.updateEmployee(this.passwordForm.value)
-          .subscribe(
-            (data: any) => {
-              console.log('Employee password updated successfully');              
-              if (this.user.type == 'admin')
-              return this.router.navigate(['Schedule']);
-              else
-              return this.router.navigate(['mySchedule']);
-            },
-            error => { this.errorMessage = error.error.message }
-          );
-      }
+    this.service.updateEmployee(this.passwordForm.value)
+      .subscribe(
+        (response: any) => {
+          this.snackBar.open(response.message, 'Close', { duration: 3000 });
+        },
+        err => {
+          this.errorMessage = err.error.message
+          this.snackBar.open(err.error.message, 'Close', { duration: 3000 });
+          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+        },
+        () => {
+          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+        }
+      );
   }
 }

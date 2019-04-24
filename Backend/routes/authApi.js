@@ -14,7 +14,7 @@ router.post('/login', (req, res) => {
       res.status(401).json({ message: 'Authentication failed. User not found.' });
     } else if (user) {
       bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
-        if (err) throw err;
+        if (err) res.status(500).json({ success: false, message: "Error", error: err });
         if (isMatch) {
           token = jwt.sign({
             email: user.email,
@@ -29,8 +29,7 @@ router.post('/login', (req, res) => {
             email: user.email,
             token: token
           });
-        }
-        else {
+        } else {
           res.status(401).json({ message: 'Authentication failed. Wrong password.' })
         }
       })

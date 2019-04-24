@@ -24,7 +24,7 @@ router.get('/geocode/:latlng', (req, res) => {
 
             res.status(200).json(info)
         })
-        .catch(error => { throw error })
+        .catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
 })
 
 
@@ -32,11 +32,10 @@ router.get('/distance/:origins/:destinations', (req, res) => {
     origins = req.params['origins'];
     destinations = req.params['destinations'];
     let url = `${googleapi}/distancematrix/json?origins=${origins}&destinations=${destinations}&key=${cfg.directionKey}`;
-    console.log(url)
     axios.get(url)
         .then(result => {
             res.status(200).json(result.data)
         })
-        .catch(error => { throw error })
+        .catch(err => res.status(500).json({ success: false, message: "Error", error: err }));
 })
 module.exports = router

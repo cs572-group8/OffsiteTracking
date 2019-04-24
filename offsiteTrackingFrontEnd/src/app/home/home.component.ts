@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ClientService } from '../service/client-service.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '../redux/reducers'
 import * as DetailActions from '../redux/actions/detail.action'
+import * as LoaderActions from '../redux/actions/loader.action'
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,10 +19,14 @@ export class HomeComponent implements OnInit {
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  requestCounter: number = 0
   constructor(private clientservice: ClientService,
     private store: Store<State>,
-    private router: Router) {
+    private router: Router
+  ) {
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      this.requestCounter = result.counter
+    })
     this.getSchedules()
   }
 
@@ -36,7 +41,10 @@ export class HomeComponent implements OnInit {
         this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
       },
       err => {
-        console.log(err);
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      },
+      () => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
       }
     )
   }

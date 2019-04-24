@@ -1,9 +1,9 @@
 <div class="main-div">
+  <img src="../../assets/images/bg2.jpg" class="background" />
   <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
+      <img src="../../assets/images/img.png" class="img-traking" />
+      <p class="text-center">Employee Offsite Traking</p>
       <form class="example-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="example-full-width">
           <input matInput placeholder="email" formControlName="email" name="email" required>
@@ -16,14 +16,10 @@
 
         <mat-error>{{serviceErrors?.message}}</mat-error>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
-
         <mat-card-actions>
-          <button mat-raised-button type="submit" color="primary">Login</button>
-          <button mat-raised-button color="primary">ForgetPassword</button>
+          <button mat-raised-button type="submit" color="primary" [disabled]="this.requestCounter > 0"><i
+              class="fa fa-sign-in"></i> Login</button>
         </mat-card-actions>
-
       </form>
-
     </mat-card-content>
   </mat-card>
-</div>

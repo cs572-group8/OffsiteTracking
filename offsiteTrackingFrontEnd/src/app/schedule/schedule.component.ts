@@ -9,6 +9,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '../redux/reducers';
 import { IScheduleDetail } from '../models/scheduledetail.model';
 import * as DetailActions from '../redux/actions/detail.action'
+import * as LoaderActions from '../redux/actions/loader.action'
 
 @Component({
   selector: 'app-schedule',
@@ -16,6 +17,7 @@ import * as DetailActions from '../redux/actions/detail.action'
   styleUrls: ['./schedule.component.scss']
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
+  title = "Create Schedule"
   scheduleForm: FormGroup;
   snackBarRef
   showFiller = false;
@@ -30,7 +32,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     scheduleId: "",
     detail: false
   }
-
+  requestCounter: number = 0
   constructor(
     private formBuilder: FormBuilder,
     private service: ClientService,
@@ -44,27 +46,32 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         this.scheduleDetail = data
       }
     );
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      this.requestCounter = result.counter
+    })
     this.scheduleForm = this.formBuilder.group({
-      placeName: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
+      placeName: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
       address: this.formBuilder.group({
-        state: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-        city: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-        street: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-        postalCode: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-        location: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required], this.locationValidator]
+        state: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+        city: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+        street: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+        postalCode: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+        location: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required], this.locationValidator]
       }),
       schedule: this.formBuilder.group(
         {
-          employeeId: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-          date: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]],
-          description: [{ value: '', disabled: this.scheduleDetail.detail }, [Validators.required]]
+          employeeId: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+          date: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]],
+          description: [{ value: '', disabled: this.scheduleDetail.detail || this.requestCounter > 0 }, [Validators.required]]
         }
       )
     });
 
     this.getUserLocation()
-    if (this.scheduleDetail.detail)
+    if (this.scheduleDetail.detail) {
+      this.title = "Schedule Details"
       this.getScheduleDetail();
+    }
   }
 
   ngOnInit() {
@@ -72,7 +79,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   onChoseLocation(event) {
-    if (!this.scheduleDetail.detail) {
+    if (!this.scheduleDetail.detail || this.requestCounter > 0) {
       let coords = event.coords;
       this.lat = coords.lat;
       this.lng = coords.lng;
@@ -84,19 +91,28 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   fillAdress() {
-    this.geoservice.getLocationInformation(this.latlng)
-    this.dataservice.emitter.subscribe(res => {
-      this.scheduleForm.get("address").get('street').setValue(res.street.trim())
-      this.scheduleForm.get("address").get('city').setValue(res.city.trim())
-      this.scheduleForm.get("address").get('state').setValue(res.state.trim())
-      this.scheduleForm.get("address").get('postalCode').setValue(res.postalCode.trim())
+    this.geoservice.getLocationInformation(this.latlng).subscribe(
+      (res: any) => {
+        this.scheduleForm.get("address").get('street').setValue(res.street.trim())
+        this.scheduleForm.get("address").get('city').setValue(res.city.trim())
+        this.scheduleForm.get("address").get('state').setValue(res.state.trim())
+        this.scheduleForm.get("address").get('postalCode').setValue(res.postalCode.trim())
 
-      this.scheduleForm.get("address").get('location').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.scheduleForm.get("address").get('street').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.scheduleForm.get("address").get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.scheduleForm.get("address").get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-      this.scheduleForm.get("address").get('postalCode').updateValueAndValidity({ onlySelf: true, emitEvent: true })
-    })
+        this.scheduleForm.get("address").get('location').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.scheduleForm.get("address").get('street').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.scheduleForm.get("address").get('city').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.scheduleForm.get("address").get('state').updateValueAndValidity({ onlySelf: true, emitEvent: true })
+        this.scheduleForm.get("address").get('postalCode').updateValueAndValidity({
+          onlySelf: true, emitEvent: true
+        })
+      },
+      err => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      },
+      () => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      }
+    )
   }
 
   private getUserLocation() {
@@ -152,6 +168,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       },
       err => {
         console.log(err);
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      },
+      () => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
       }
     )
   }
@@ -162,7 +182,13 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   getEmployees() {
     this.service.getEmployees().subscribe(
       res => { this.employees = res },
-      err => { console.log(err) }
+      err => {
+        console.log(err)
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      },
+      () => {
+        this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+      }
     )
   }
   place = {
@@ -194,6 +220,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         },
         err => {
           console.log(err);
+          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
+        },
+        () => {
+          this.store.dispatch(new LoaderActions.Change({ counter: this.requestCounter - 1 }))
         }
       )
   }

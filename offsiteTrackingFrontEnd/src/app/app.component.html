@@ -1,21 +1,32 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>OffsiteTracking</span>
-    <span class="example-fill-remaining-space"></span>
-    <span class="align-center"></span>
-    <span class="example-spacer"></span>
-    <button mat-button>About</button>
-    <button mat-button>Contact</button>
-    <div *ngIf="user$ | async as user">
-      <a mat-button [routerLink]="['']" *ngIf="user.userType === 'admin'">Home</a>
-      <a mat-button [routerLink]="['user']" *ngIf="user.userType === 'admin'">Employee Information</a>
-      <a mat-button [routerLink]="['Schedule']" *ngIf="user.userType === 'admin'">Schedule</a>
-      <a mat-button [routerLink]="['mySchedule']" *ngIf="user.userType === 'employee'">My
-        Schedule</a>
-      <a mat-button class="password" [routerLink]="['password']" *ngIf="user.userType !== ''">Change Password</a>
-      <a mat-button class="logout" [routerLink]="['logout']" *ngIf="user.userType !== ''">Logout</a>
-    </div>
-  </mat-toolbar-row>
-</mat-toolbar>
-<mat-progress-bar mode="indeterminate" *ngIf="0"></mat-progress-bar>
+<mat-progress-bar *ngIf="count > 0" mode="indeterminate"></mat-progress-bar>
+<div *ngIf="user$ | async as user;">
+  <mat-toolbar color="primary" *ngIf="user.userType !== ''">
+    <mat-toolbar-row>
+      <span><i class="fa fa-map-marker"></i> Offsite Tracking</span>
+      <span class="example-fill-remaining-space"></span>
+      <span class="align-center"></span>
+      <span class="example-spacer"></span>
+      <div>
+        <a mat-button [routerLink]="['']" *ngIf="user.userType === 'admin'">
+          <i class="fa fa-home"></i> Home
+        </a>
+        <a mat-button [routerLink]="['user']" *ngIf="user.userType === 'admin'"> <i class="fa fa-user"></i> Employee
+          Information</a>
+        <a mat-button [routerLink]="['Schedule']" *ngIf="user.userType === 'admin'"><i
+            class="fa fa-calendar-plus-o"></i>
+          Schedule</a>
+        <a mat-button [routerLink]="['mySchedule']" *ngIf="user.userType === 'employee'"><i
+            class="fa fa-calendar-check-o"></i> My
+          Schedule</a>
+        <a mat-button class="password" [routerLink]="['password']" *ngIf="user.userType !== ''"><i class="fa fa-key">
+          </i>
+          Change Password</a>
+        <span class="logout">
+          <i class="fa fa-user-o"></i><span class="user">{{user.name}}</span>
+          <a mat-button [routerLink]="['logout']" *ngIf="user.userType !== ''"><i class="fa fa-sign-out"></i>Logout</a>
+        </span>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
 <router-outlet></router-outlet>

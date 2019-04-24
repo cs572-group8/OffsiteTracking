@@ -14,15 +14,18 @@ import { IUser } from './models/user.model';
 
 export class AppComponent implements OnInit {
   user$: Observable<IUser>;
-
+  count: number = 0
   constructor(
     private router: Router,
     private userService: UserService,
     private store: Store<State>
   ) {
     this.user$ = this.store.pipe(select('user'));
+    this.store.pipe(select('loader')).subscribe((result: any) => {
+      setTimeout(() => this.count = result.counter, 0)
+    })
   }
-  title = 'offsiteTrackingFrontEnd';
+  title = 'Offsite Tracking';
 
   ngOnInit() {
   }
